@@ -1,0 +1,6 @@
+*.swp
+*.kate-swp
+json-data/
+out-firewall-data
+compute-instances.json
+firewall-rules.json

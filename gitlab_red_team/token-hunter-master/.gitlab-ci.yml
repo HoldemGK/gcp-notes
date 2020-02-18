@@ -1,0 +1,9 @@
+image: "python:latest"
+
+before_script:
+  - apt-get update -qq
+  - pip3 install -r ./requirements.txt
+
+test:
+  script:
+    - pytest -v

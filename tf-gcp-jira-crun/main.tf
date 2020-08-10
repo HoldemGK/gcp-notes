@@ -32,5 +32,6 @@ resource "google_sql_database_instance" "sql_jira_inst" {
     database_flags {
       character_set_server = "utf8mb4"
       sql_mode             = "STRICT_TRANS_TABLES"
+    }
   }
 }

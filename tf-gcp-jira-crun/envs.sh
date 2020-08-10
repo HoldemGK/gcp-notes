@@ -3,7 +3,7 @@
 export KEY_JSON=/home/keys/key-packer.json
 export REGION=europe-west1
 export ZONE=europe-west1-b
-export MACHINE_TYPE=n1-standard-1
+export TIER=db-n1-standard-1
 export IMAGE_FAMILY=packer-family
 export SQL_INST_NAME=mysql-jira-instance
 # USER in GCP created automatic
@@ -20,7 +20,7 @@ export TF_VAR_key=${KEY_JSON}
 export TF_VAR_sql_inst_name=${SQL_INST_NAME}
 export TF_VAR_region=${REGION}
 export TF_VAR_zone=${ZONE}
-export TF_VAR_machine_type=${MACHINE_TYPE}
+export TF_VAR_tier=${TIER}
 export TF_VAR_project=${PROJECT}
 export TF_VAR_sa_name=${SA_NAME}
 export TF_VAR_sa_role=${SA_ROLE}

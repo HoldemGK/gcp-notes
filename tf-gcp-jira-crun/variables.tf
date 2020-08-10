@@ -20,8 +20,8 @@ variable "zone" {
   description = "In this example europe-west1-b"
 }
 
-variable "machine_type" {
-  description = "Type of instance"
+variable "tier" {
+  description = "The tier for the master instance."
 }
 
 variable "sa_name" {
@@ -34,6 +34,16 @@ variable "sa_role" {
 
 variable "sa_email" {
   description = "Service account Email"
+}
+
+variable "database_flags" {
+  description = "The database flags for the master instance."
+  default = []
+}
+
+variable "root_password" {
+  description = "MSSERVER password for the root user. If not set, a random one will be generated and available in the root_password output variable."
+  default     = ""
 }
 
 variable "image_family" {

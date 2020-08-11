@@ -4,12 +4,16 @@ MyGCP
 Documentation - https://cloud.google.com/docs/tutorials
 
 Set up Terraform Service Account
+
 `export TF_ADMIN=${USER}-terraform-admin`
+
 `gcloud iam service-accounts create terraform \
   --display-name "Terraform admin account"`
+
 `gcloud projects add-iam-policy-binding ${TF_ADMIN} \
   --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com \
   --role roles/editor`
+  
 `gcloud iam service-accounts keys create key.json \
   --iam-account terraform@${TF_ADMIN}.iam.gserviceaccount.com`
 

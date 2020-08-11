@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export KEY_JSON=/home/keys/key-packer.json
+export KEY_JSON=/home/keys/key.json
+export TF_ADMIN=${USER}-terraform-admin
 export REGION=europe-west1
 export ZONE=europe-west1-b
 export TIER=db-n1-standard-1

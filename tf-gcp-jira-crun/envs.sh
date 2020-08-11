@@ -13,7 +13,6 @@ export SA_ROLE="roles/cloudsql.client"
 export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jira-service-account" \
     --format='value(email)')
-export IMAGE_SOURCE=$(gcloud compute images list --format="value(NAME)" --filter="family=ubuntu-1804-lts")
 
 # TERRAFORM SPECIFIC ENV VARS - EQUAL TO THE ONES ABOVE, JUST NAMED DIFFERENTLY
 export TF_VAR_key=${KEY_JSON}
@@ -25,4 +24,3 @@ export TF_VAR_project=${PROJECT}
 export TF_VAR_sa_name=${SA_NAME}
 export TF_VAR_sa_role=${SA_ROLE}
 export TF_VAR_sa_email=${SA_EMAIL}
-export TF_VAR_image_family=${IMAGE_FAMILY}

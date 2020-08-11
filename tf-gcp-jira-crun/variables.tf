@@ -8,10 +8,6 @@ variable "sql_inst_name" {
   description = "SQL Jira instance"
 }
 
-variable "num_instances" {
-  description = "Number of instances to create"
-}
-
 variable "region" {
   description = "In this example europe-west1"
 }
@@ -54,8 +50,4 @@ variable "database_flags" {
 variable "root_password" {
   description = "MSSERVER password for the root user. If not set, a random one will be generated and available in the root_password output variable."
   default     = ""
-}
-
-variable "image_family" {
-  description = "GCP image family"
 }

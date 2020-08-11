@@ -38,7 +38,17 @@ variable "sa_email" {
 
 variable "database_flags" {
   description = "The database flags for the master instance."
-  default = []
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = [{
+    name = "character_set_server"
+    value = "utf8mb4"
+    }, {
+    name = "sql_mode"
+    value = "STRICT_TRANS_TABLES"
+    }]
 }
 
 variable "root_password" {

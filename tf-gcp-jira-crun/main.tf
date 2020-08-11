@@ -29,9 +29,12 @@ resource "google_sql_database_instance" "sql_jira_inst" {
 
   settings {
     tier = var.tier
-    database_flags {
-      character_set_server = "utf8mb4"
-      sql_mode             = "STRICT_TRANS_TABLES"
+    dynamic "database_flags" {
+      for_each = var.database_flags
+      content {
+        name  = lookup(database_flags.value, "name", null)
+        value = lookup(database_flags.value, "value", null)
+      }
     }
   }
 }

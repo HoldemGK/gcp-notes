@@ -9,11 +9,11 @@ resource "google_service_account" "service_account" {
   display_name = var.sa_name
 }
 
-resource "google_project_iam_binding" "project" {
+resource "google_project_iam_binding" "iam_binding" {
   project = var.project
   role    = var.sa_role
 
-  members = ["serviceAccount:${var.sa_email}"]
+  members = ["serviceAccount:${var.sa_email}",]
 }
 
 resource "random_password" "root-password" {

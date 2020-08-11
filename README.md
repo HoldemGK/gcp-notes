@@ -3,10 +3,10 @@ MyGCP
 
 * Documentation - https://cloud.google.com/docs/tutorials
 
-## Set up Terraform Service Account
+### Set up Terraform Service Account
 
 ```
-export TF_ADMIN=${USER}-terraform-admin
+export PROJECT=$(gcloud info --format='value(config.project)')
 
 gcloud iam service-accounts create terraform \
 

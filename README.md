@@ -1,11 +1,12 @@
 # gcp-projects
 MyGCP
 
-Documentation - https://cloud.google.com/docs/tutorials
+* Documentation - https://cloud.google.com/docs/tutorials
 
-Set up Terraform Service Account
+## Set up Terraform Service Account
 
-`export TF_ADMIN=${USER}-terraform-admin
+```
+export TF_ADMIN=${USER}-terraform-admin
 
 gcloud iam service-accounts create terraform \
 
@@ -19,6 +20,7 @@ gcloud projects add-iam-policy-binding ${PROJECT} \
 
 gcloud iam service-accounts keys create key.json \
 
-   --iam-account terraform@${PROJECT}.iam.gserviceaccount.com`
+   --iam-account terraform@${PROJECT}.iam.gserviceaccount.com
+```
 
-GCP privilege escalation - [Gitlab Red Team](https://about.gitlab.com/blog/2020/02/12/plundering-gcp-escalating-privileges-in-google-cloud-platform/?utm_medium=social&utm_source=twitter&utm_campaign=blog)
+* GCP privilege escalation - [Gitlab Red Team](https://about.gitlab.com/blog/2020/02/12/plundering-gcp-escalating-privileges-in-google-cloud-platform/?utm_medium=social&utm_source=twitter&utm_campaign=blog)

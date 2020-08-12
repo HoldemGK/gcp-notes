@@ -13,7 +13,7 @@ resource "google_project_iam_binding" "iam_binding" {
   project = var.project
   role    = var.sa_role
 
-  members = ["serviceAccount:${var.sa_email}",]
+  members = ["serviceAccount:${var.sa_email}"]
 }
 
 resource "random_password" "root-password" {
@@ -37,4 +37,26 @@ resource "google_sql_database_instance" "sql_jira_inst" {
       }
     }
   }
+}
+
+resource "google_cloud_run_service" "jira-crun" {
+  name     = "cloudrun-srv"
+  location = var.region
+
+  template {
+    spec {
+      containers {
+        image = var.gcr_image
+      }
+    }
+
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale"      = "1000"
+        "run.googleapis.com/cloudsql-instances" = "my-project-name:us-central1:${google_sql_database_instance.instance.name}"
+        "run.googleapis.com/client-name"        = "terraform"
+      }
+    }
+  }
+  autogenerate_revision_name = true
 }

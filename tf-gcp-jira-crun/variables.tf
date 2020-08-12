@@ -32,6 +32,10 @@ variable "sa_email" {
   description = "Service account Email"
 }
 
+variable "gcr_image" {
+  description = "Docker Image in GCR"
+}
+
 variable "database_flags" {
   description = "The database flags for the master instance."
   type = list(object({

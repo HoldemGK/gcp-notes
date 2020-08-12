@@ -13,8 +13,8 @@ export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jira-service-account" \
     --format='value(email)')
 export TAG="8.2.4"
-export JIRA_IMAGE='atlassian/jira-software:${TAG}'
-export GCR_IMAGE='gcr.io/${PROJECT}/jira:${TAG}'
+export JIRA_IMAGE=atlassian/jira-software:${TAG}
+export GCR_IMAGE=gcr.io/${PROJECT}/jira:${TAG}
 
 # TERRAFORM SPECIFIC ENV VARS - EQUAL TO THE ONES ABOVE, JUST NAMED DIFFERENTLY
 export TF_VAR_key=${KEY_JSON}

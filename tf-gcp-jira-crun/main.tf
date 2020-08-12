@@ -52,11 +52,27 @@ resource "google_cloud_run_service" "jira-crun" {
 
     metadata {
       annotations = {
-        "autoscaling.knative.dev/maxScale"      = "1000"
-        "run.googleapis.com/cloudsql-instances" = "my-project-name:us-central1:${google_sql_database_instance.instance.name}"
+        "run.googleapis.com/cloudsql-instances" = "${var.project}:${var.region}:${google_sql_database_instance.sql_jira_inst.name}"
         "run.googleapis.com/client-name"        = "terraform"
       }
     }
   }
   autogenerate_revision_name = true
+}
+
+# Create public access
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
+  }
+}
+# Enable public access on Cloud Run service
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = google_cloud_run_service.jira-crun.location
+  project     = google_cloud_run_service.jira-crun.project
+  service     = google_cloud_run_service.jira-crun.name
+  policy_data = data.google_iam_policy.noauth.policy_data
 }

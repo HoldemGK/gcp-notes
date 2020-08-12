@@ -5,7 +5,6 @@ export REGION=europe-west1
 export ZONE=europe-west1-b
 export TIER=db-n1-standard-1
 export SQL_INST_NAME=mysql-jira-instance
-# USER in GCP created automatic
 export PROJECT=$(gcloud info --format='value(config.project)')
 export SA_NAME=jira-service-account
 export SA_ROLE="roles/cloudsql.client"

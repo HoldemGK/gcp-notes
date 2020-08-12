@@ -10,7 +10,8 @@ export SQL_INST_NAME=mysql-jira-instance
 # USER in GCP created automatic
 export PROJECT=$(gcloud info --format='value(config.project)')
 export SA_NAME=jira-service-account
-export SA_ROLE="roles/cloudsql.client"
+export SA_ROLE="roles/compute.admin"
+#export SA_ROLE="roles/cloudsql.client"
 export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jira-service-account" \
     --format='value(email)')

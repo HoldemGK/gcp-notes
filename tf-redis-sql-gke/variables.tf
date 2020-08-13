@@ -1,11 +1,7 @@
-variable "project" {}
+variable "project_id" {}
 
 variable "key" {
   description = "The path to the GCP credentials JSON file"
-}
-
-variable "sql_inst_name" {
-  description = "SQL Jira instance"
 }
 
 variable "region" {
@@ -16,42 +12,26 @@ variable "zone" {
   description = "In this example europe-west1-b"
 }
 
-variable "tier" {
-  description = "The tier for the master instance."
+variable "sql_inst_name" {
+  description = "SQL Jira instance"
 }
 
-variable "sa_name" {
-  description = "Service account Name"
+variable "db_version" {
+  description = "Database Version"
 }
 
-variable "sa_role" {
-  description = "Service account Role"
+variable "network" {
+  description = "Network Name"
 }
 
-variable "sa_email" {
-  description = "Service account Email"
+variable "subnetwork" {
+  description = "Subnetwork Name"
 }
 
-variable "gcr_image" {
-  description = "Docker Image in GCR"
+variable "private_ip_name" {
+  description = "Private IP Name"
 }
 
-variable "database_flags" {
-  description = "The database flags for the master instance."
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default = [{
-    name = "character_set_server"
-    value = "utf8mb4"
-    }, {
-    name = "sql_mode"
-    value = "STRICT_TRANS_TABLES"
-    }]
-}
-
-variable "root_password" {
-  description = "MSSERVER password for the root user. If not set, a random one will be generated and available in the root_password output variable."
-  default     = ""
+variable "cluster_name" {
+  description = "Private IP Name"
 }

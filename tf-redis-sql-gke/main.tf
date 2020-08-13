@@ -8,13 +8,13 @@ locals {
 
 // Configure the Google Cloud provider
 provider "google" {
- credentials = file("CREDENTIALS_FILE.json")
+ credentials = file(var.key)
  project     = local.project_id
  region      = local.region
 }
 
 provider "google-beta" {
-  credentials = file("CREDENTIALS_FILE.json")
+  credentials = file(var.key)
   project     = local.project_id
   region      = local.region
 }

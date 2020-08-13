@@ -27,7 +27,7 @@ gsutil mb -c standard -l us-east1 gs://$PROJECT_ID
 gcloud iam service-accounts create terraform \
     --description="Terraform Service Account" \
     --display-name="Terraform"
-    gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud projects add-iam-policy-binding $PROJECT_ID \
       --member serviceAccount:terraform@$PROJECT_ID.iam.gserviceaccount.com \
       --role roles/owner
 gcloud iam service-accounts keys create key-tf.json --iam-account=terraform@$PROJECT_ID.iam.gserviceaccount.com --project $PROJECT_ID

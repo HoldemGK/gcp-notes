@@ -37,6 +37,10 @@ resource "google_sql_database_instance" "sql_jira_inst" {
       }
     }
   }
+
+  provisioner "local-exec" {
+    command = "./up_gcr_image.sh"
+  }
 }
 
 resource "google_cloud_run_service" "jira-crun" {

@@ -62,6 +62,8 @@ resource "google_cloud_run_service" "jira-crun" {
     }
   }
   autogenerate_revision_name = true
+
+  depends_on = [google_sql_database_instance.sql_jira_inst]
 }
 
 # Create public access

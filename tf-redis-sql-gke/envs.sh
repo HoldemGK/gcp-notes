@@ -4,11 +4,16 @@ export PROJECT_ID=$(gcloud info --format='value(config.project)')
 export KEY_JSON=/home/keys/key-tf.json
 export REGION=us-west1
 export ZONE=us-west1-b
+# Cloud SQL Network
 export SQL_INST_NAME=ps-instance
 export DB_VERSION="POSTGRES_11"
 export NETWORK=${PROJECT_ID}'-network'
 export SUBNETWORK=${PROJECT_ID}'-subnetwork'
 export PRIVATE_IP_NAME="PRIVATE_IP"
+export PURPOSE="VPC_PEERING"
+export ADDRESS_TYPE="INTERNAL"
+export PREFIX_LENGTH=16
+export DB_INSTANCE_TIER="db-custom-1-3840"
 export CLUSTER_NAME="mr-cluster"
 # Redis pref
 export REDIS_NAME="mr-redis"
@@ -31,3 +36,7 @@ export TF_VAR_redis_name=${REDIS_NAME}
 export TF_VAR_redis_version=${REDIS_VERSION}
 export TF_VAR_redis_size=${REDIS_SIZE}
 export TF_VAR_redis_tier=${REDIS_TIER}
+export TF_VAR_purpose=${PURPOSE}
+export TF_VAR_address_type=${ADDRESS_TYPE}
+export TF_VAR_prefix_length=${PREFIX_LENGTH}
+export TF_VAR_db_instance_tier=${DB_INSTANCE_TIER}

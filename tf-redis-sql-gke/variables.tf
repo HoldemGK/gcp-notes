@@ -16,10 +16,6 @@ variable "sql_inst_name" {
   description = "SQL Jira instance"
 }
 
-variable "db_version" {
-  description = "Database Version"
-}
-
 variable "network" {
   description = "Network Name"
 }
@@ -28,9 +24,9 @@ variable "subnetwork" {
   description = "Subnetwork Name"
 }
 
-variable "private_ip_name" {
-  description = "Private IP Name"
-}
+#variable "private_ip_name" {
+#  description = "Private IP Name"
+#}
 
 variable "cluster_name" {
   description = "Cluster Name"

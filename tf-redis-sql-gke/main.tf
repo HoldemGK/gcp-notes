@@ -1,44 +1,54 @@
-provider "google" {
-  credentials = file(var.key)
-  project     = var.project_id
-  region      = var.region
+locals {
+  database_version = "" # "POSTGRES_11"
+  network          = "" # Network name
+  region           = "" # us-east1
+  project_id       = "" # GCP Project ID
+  subnetwork       = "" # Subnetwork name
 }
+
+// Configure the Google Cloud provider
+provider "google" {
+ credentials = file("CREDENTIALS_FILE.json")
+ project     = local.project_id
+ region      = local.region
+}
+
 provider "google-beta" {
-  credentials = file(var.key)
-  project     = var.project_id
-  region      = var.region
+  credentials = file("CREDENTIALS_FILE.json")
+  project     = local.project_id
+  region      = local.region
 }
 
 module "cloudsql" {
   source           = "./modules/cloudsql"
-  network          = var.network
-  private_ip_name  = ""#var.private_ip_name
-  project          = var.project_id
-  region           = var.region
+  network          = local.network
+  private_ip_name  = "" # Private IP Name
+  project          = local.project_id
+  region           = local.region
 }
 
 module "gke" {
   source           = "./modules/gke"
-  cluster          = var.cluster_name
-  network          = var.network
-  project          = var.project_id
-  region           = var.region
-  subnetwork       = var.subnetwork
-  zones            = ["${var.zone}"]
+  cluster          = "" # Cluster Name
+  network          = local.network
+  project          = local.project_id
+  region           = local.region
+  subnetwork       = local.subnetwork
+  zones            = "" # ["us-east1-b", "us-east1-c", "us-east1-d"]
 }
 
 module "memorystore" {
   source         = "./modules/memorystore"
-  display_name   = var.redis_name
-  ip_range       = "169.254.1.1/30"
-  location       = var.zone
-  name           = var.redis_name
-  network        = var.network
-  project        = var.project_id
-  redis_version  = var.redis_version
-  region         = var.region
-  size           = var.redis_size
-  tier           = var.redis_tier
+  display_name   = "" # Display Name
+  ip_range       = "" #
+  location       = "" # Zone
+  name           = "" # Instance name
+  network        = local.network
+  project        = local.project_id
+  redis_version  = "" # 5.0
+  region         = local.region
+  size           = "" # 1
+  tier           = "" # STANDARD
 }
 
 module "vpc" {

@@ -1,11 +1,5 @@
-variable "project_id" {}
-
-variable "db_version" {
+variable "database_version" {
   description = "The database version"
-}
-
-variable "db_instance_tier" {
-  description = "The database inst tier"
 }
 
 variable "network" {
@@ -16,23 +10,12 @@ variable "private_ip_name" {
   description = "The name of the private ip address being created"
 }
 
+variable "project" {
+  description = "Project ID"
+}
+
 variable "region" {
   description = "Region"
-}
-
-variable "purpose" {
-  description = "private_ip_address"
-  default     = "VPC_PEERING"
-}
-
-variable "address_type" {
-  description = "private_ip_address"
-  default     = "INTERNAL"
-}
-
-variable "prefix_length" {
-  description = "private_ip_address"
-  default     = 16
 }
 
 variable "user_name" {

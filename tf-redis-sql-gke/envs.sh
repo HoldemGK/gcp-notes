@@ -10,6 +10,11 @@ export NETWORK=${PROJECT_ID}'-network'
 export SUBNETWORK=${PROJECT_ID}'-subnetwork'
 export PRIVATE_IP_NAME="PRIVATE_IP"
 export CLUSTER_NAME="mr-cluster"
+# Redis pref
+export REDIS_NAME="mr-redis"
+export REDIS_VERSION="REDIS_5_0"
+export REDIS_SIZE=1
+export REDIS_TIER="STANDARD"
 
 # TERRAFORM SPECIFIC ENV VARS - EQUAL TO THE ONES ABOVE, JUST NAMED DIFFERENTLY
 export TF_VAR_project_id=${PROJECT_ID}
@@ -22,3 +27,7 @@ export TF_VAR_network=${NETWORK}
 export TF_VAR_subnetwork=${SUBNETWORK}
 export TF_VAR_private_ip_name=${PRIVATE_IP_NAME}
 export TF_VAR_cluster_name=${CLUSTER_NAME}
+export TF_VAR_redis_name=${REDIS_NAME}
+export TF_VAR_redis_version=${REDIS_VERSION}
+export TF_VAR_redis_size=${REDIS_SIZE}
+export TF_VAR_redis_tier=${REDIS_TIER}

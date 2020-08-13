@@ -26,3 +26,17 @@ module "gke" {
   subnetwork       = var.subnetwork
   zones            = ["${var.zone}"]
 }
+
+module "memorystore" {
+  source         = "./modules/memorystore"
+  display_name   = var.redis_name
+  ip_range       = "169.254.1.1/30"
+  location       = var.zone
+  name           = var.redis_name
+  network        = var.network
+  project        = var.project_id
+  redis_version  = var.redis_version
+  region         = var.region
+  size           = var.redis_size
+  tier           = var.redis_tier
+}

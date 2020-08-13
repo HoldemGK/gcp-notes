@@ -33,5 +33,21 @@ variable "private_ip_name" {
 }
 
 variable "cluster_name" {
-  description = "Private IP Name"
+  description = "Cluster Name"
+}
+
+variable "redis_name" {
+  description = "Redis Name"
+}
+
+variable "redis_version" {
+  description = "Redis Version"
+}
+
+variable "redis_size" {
+  description = "Redis Size"
+}
+
+variable "redis_tier" {
+  description = "Redis Tier"
 }

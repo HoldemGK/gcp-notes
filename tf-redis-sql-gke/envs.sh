@@ -23,7 +23,7 @@ export REDIS_TIER="STANDARD"
 
 # TERRAFORM SPECIFIC ENV VARS - EQUAL TO THE ONES ABOVE, JUST NAMED DIFFERENTLY
 
-# export TF_VAR_project_id=${PROJECT_ID}
+export TF_VAR_project_id=${PROJECT_ID}
 # export TF_VAR_key=${KEY_JSON}
 # export TF_VAR_region=${REGION}
 # export TF_VAR_zone=${ZONE}

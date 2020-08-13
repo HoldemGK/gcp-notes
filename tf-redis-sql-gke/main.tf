@@ -1,9 +1,9 @@
 locals {
-  database_version = var.db_version # "POSTGRES_11"
-  network          = "NET" # Network name
+  database_version = ""#"POSTGRES_11"
+  network          = ""#"NET" # Network name
   region           = "" # us-east1
-  project_id       = var.project_id # GCP Project ID
-  subnetwork       = "SUBNET" # Subnetwork name
+  project_id       = ""#var.project_id # GCP Project ID
+  subnetwork       = ""#"SUBNET" # Subnetwork name
 }
 
 // Configure the Google Cloud provider

@@ -8,13 +8,13 @@ locals {
 
 // Configure the Google Cloud provider
 provider "google" {
- credentials = file(var.key)
+ credentials = file("/home/atos_holdemgk/key-tf.json")
  project     = local.project_id
  region      = local.region
 }
 
 provider "google-beta" {
-  credentials = file(var.key)
+  credentials = file("/home/atos_holdemgk/key-tf.json")
   project     = local.project_id
   region      = local.region
 }

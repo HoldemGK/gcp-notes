@@ -34,7 +34,7 @@ module "gke" {
   project          = local.project_id
   region           = local.region
   subnetwork       = local.subnetwork
-  zones            = "" #["us-east1-b", "us-east1-c", "us-east1-d"]
+  zones            = ["us-west1-b", "us-west1-c", "us-west1-d"]
 }
 
 module "memorystore" {

@@ -1,5 +1,4 @@
 locals {
-  database_version = var.database_version # "POSTGRES_11"
   network          = var.network
   region           = var.region
   project_id       = var.project_id
@@ -21,6 +20,7 @@ provider "google-beta" {
 
 module "cloudsql" {
   source           = "./modules/cloudsql"
+  database_version = var.database_version # "POSTGRES_11"
   network          = local.network
   private_ip_name  = "" # Private IP Name
   project          = local.project_id

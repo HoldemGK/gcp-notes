@@ -36,7 +36,7 @@ resource "google_sql_database_instance" "instance" {
   depends_on = [google_service_networking_connection.private_vpc_connection]
 
   settings {
-    db_instance_tier = "db-custom-1-3840"
+    tier = "db-custom-1-3840"
     ip_configuration {
       ipv4_enabled    = false
       private_network = local.network

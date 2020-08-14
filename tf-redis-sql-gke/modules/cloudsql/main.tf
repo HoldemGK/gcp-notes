@@ -6,6 +6,11 @@ resource "random_id" "db_name_suffix" {
   byte_length = 4
 }
 
+resource "random_password" "password" {
+  length  = 8
+  special = true
+}
+
 resource "google_compute_global_address" "private_ip_address" {
   provider = google-beta
 
@@ -42,4 +47,10 @@ resource "google_sql_database_instance" "instance" {
       private_network = local.network
     }
   }
+}
+
+resource "google_sql_user" "users" {
+  name     = var.user_name
+  instance = google_sql_database_instance.instance.name
+  password = coalesce(var.password, random_password.password.result)
 }

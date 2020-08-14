@@ -12,8 +12,9 @@ provider "google-beta" {
 module "cloudsql" {
   source           = "./modules/cloudsql"
   network          = var.network
+  db_version       = var.db_version
   private_ip_name  = var.private_ip_name
-  project          = var.project_id
+  project_id       = var.project_id
   region           = var.region
 }
 /*

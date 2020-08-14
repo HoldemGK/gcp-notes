@@ -40,5 +40,5 @@ variable "user_name" {
 }
 
 variable "user_password" {
-  default     = "DB_PASSWORD"
+  description = "If not defined, generated random"
 }

@@ -1,6 +1,5 @@
 variable "database_version" {
   description = "The database version"
-  default = "POSTGRES_11"
 }
 
 variable "network" {

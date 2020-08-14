@@ -1,7 +1,7 @@
 locals {
   database_version = "" # "POSTGRES_11"
   network          = ""#"NET" # Network name
-  region           = "" # us-east1
+  region           = var.region # us-east1
   project_id       = ""#var.project_id # GCP Project ID
   subnetwork       = ""#"SUBNET" # Subnetwork name
 }

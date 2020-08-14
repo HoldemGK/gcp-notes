@@ -1,4 +1,4 @@
 output "root_password" {
-  value       = coalesce(var.password, random_password.password.result)
+  value       = coalesce(var.user_password, random_password.user_password.result)
   sensitive   = true
 }

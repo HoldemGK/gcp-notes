@@ -13,6 +13,7 @@ module "cloudsql" {
   source           = "./modules/cloudsql"
   network          = var.network
   db_version       = var.db_version
+  db_instance_tier = var.db_instance_tier
   private_ip_name  = var.private_ip_name
   project_id       = var.project_id
   region           = var.region

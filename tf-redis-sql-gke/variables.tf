@@ -12,8 +12,12 @@ variable "zone" {
   description = "In this example europe-west1-b"
 }
 
-variable "sql_inst_name" {
-  description = "SQL Jira instance"
+variable "db_version" {
+  description = "The database version"
+}
+
+variable "db_instance_tier" {
+  description = "The database inst tier"
 }
 
 variable "network" {
@@ -24,9 +28,9 @@ variable "subnetwork" {
   description = "Subnetwork Name"
 }
 
-#variable "private_ip_name" {
-#  description = "Private IP Name"
-#}
+variable "private_ip_name" {
+  description = "Private IP Name"
+}
 
 variable "cluster_name" {
   description = "Cluster Name"

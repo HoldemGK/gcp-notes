@@ -6,7 +6,7 @@ resource "random_id" "db_name_suffix" {
   byte_length = 4
 }
 
-resource "random_password" "password" {
+resource "random_password" "user_password" {
   length  = 8
   special = true
 }
@@ -52,5 +52,5 @@ resource "google_sql_database_instance" "instance" {
 resource "google_sql_user" "users" {
   name     = var.user_name
   instance = google_sql_database_instance.instance.name
-  password = coalesce(var.password, random_password.password.result)
+  password = coalesce(var.user_password, random_password.user_password.result)
 }

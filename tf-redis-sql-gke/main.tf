@@ -12,11 +12,11 @@ provider "google-beta" {
 module "cloudsql" {
   source           = "./modules/cloudsql"
   network          = var.network
-  private_ip_name  = ""#var.private_ip_name
+  private_ip_name  = var.private_ip_name
   project          = var.project_id
   region           = var.region
 }
-
+/*
 module "gke" {
   source           = "./modules/gke"
   cluster          = var.cluster_name
@@ -40,11 +40,11 @@ module "memorystore" {
   size           = var.redis_size
   tier           = var.redis_tier
 }
-
+*/
 module "vpc" {
   source           = "./modules/vpc"
-  project          = local.project_id
-  network          = local.network
-  region           = local.region
-  subnetwork       = local.subnetwork
+  project          = var.project_id
+  network          = var.network
+  region           = var.region
+  subnetwork       = var.subnetwork
 }

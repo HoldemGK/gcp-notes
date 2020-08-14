@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PROJECT_ID=$(gcloud info --format='value(config.project)')
-export KEY_JSON=~/key-tf.json
+export KEY_JSON="/home/atos_holdemgk/key-tf.json"
 export REGION=us-west1
 export ZONE=us-west1-b
 # Cloud SQL Network

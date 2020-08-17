@@ -4,8 +4,17 @@ provider "google" {
   region      = var.region
 }
 
+resource "random_id" "db_name_suffix" {
+  byte_length = 4
+}
+
+resource "random_password" "root-password" {
+  length  = 8
+  special = true
+}
+
 resource "google_service_account" "service_account" {
-  account_id   = var.sa_name
+  account_id   = "${var.sa_name}-${random_id.db_name_suffix.hex}" #var.sa_name
   display_name = var.sa_name
 }
 
@@ -17,13 +26,8 @@ resource "google_project_iam_binding" "iam_binding" {
   depends_on = [google_service_account.service_account]
 }
 
-resource "random_password" "root-password" {
-  length  = 8
-  special = true
-}
-
 resource "google_sql_database_instance" "sql_jira_inst" {
-  name             = var.sql_inst_name
+  name             = "${var.sql_inst_name}-${random_id.db_name_suffix.hex}"
   database_version = "MYSQL_5_7"
   region           = var.region
   root_password = coalesce(var.root_password, random_password.root-password.result)

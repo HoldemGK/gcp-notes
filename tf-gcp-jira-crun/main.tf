@@ -14,6 +14,7 @@ resource "google_project_iam_binding" "iam_binding" {
   role    = var.sa_role
 
   members = ["serviceAccount:${var.sa_email}"]
+  depends_on = [google_service_account.service_account]
 }
 
 resource "random_password" "root-password" {

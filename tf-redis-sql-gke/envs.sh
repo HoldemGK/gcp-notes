@@ -14,6 +14,7 @@ export PURPOSE="VPC_PEERING"
 export ADDRESS_TYPE="INTERNAL"
 export PREFIX_LENGTH=16
 export DB_INSTANCE_TIER="db-custom-1-3840"
+# GKE pref
 export CLUSTER_NAME="mr-cluster"
 # Redis pref
 export REDIS_NAME="mr-redis"

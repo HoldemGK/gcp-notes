@@ -1,7 +1,3 @@
-locals {
-  cluster_name = var.cluster_name
-}
-
 provider "google" {
   credentials = file(var.key)
   project     = var.project_id
@@ -25,7 +21,7 @@ module "cloudsql" {
 */
 module "gke" {
   source           = "./modules/gke"
-  cluster          = local.cluster_name
+  cluster          = var.cluster_name
   network          = var.network
   project          = var.project_id
   region           = var.region

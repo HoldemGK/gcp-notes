@@ -1,6 +1,6 @@
 # GCP variables
 
-variable "project" {}
+variable "project_id" {}
 
 variable "region" {
   description = "Region"

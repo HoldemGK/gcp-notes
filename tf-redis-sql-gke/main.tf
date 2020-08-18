@@ -1,7 +1,7 @@
 locals {
   network          = var.network
   region           = var.region
-  project_id       = "gk-storage"
+  project_id       = var.project_id
   subnetwork       = var.subnetwork
 }
 

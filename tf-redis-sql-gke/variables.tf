@@ -36,6 +36,14 @@ variable "cluster_name" {
   description = "Cluster Name"
 }
 
+variable "mce_start_time" {
+  description = "maintenance_start_time"
+}
+
+variable "pool_machine_type" {
+  description = "pool_machine_type"
+}
+
 variable "redis_name" {
   description = "Redis Name"
 }

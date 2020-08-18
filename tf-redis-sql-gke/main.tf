@@ -22,6 +22,8 @@ module "cloudsql" {
 module "gke" {
   source           = "./modules/gke"
   cluster_name     = var.cluster_name
+  mce_start_time   = var.mce_start_time
+  pool_machine_type= var.pool_machine_type
   network          = var.network
   project          = var.project_id
   region           = var.region

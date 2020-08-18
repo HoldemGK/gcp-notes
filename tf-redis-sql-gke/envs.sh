@@ -16,6 +16,8 @@ export PREFIX_LENGTH=16
 export DB_INSTANCE_TIER="db-custom-1-3840"
 # GKE pref
 export CLUSTER_NAME="mr-cluster"
+export MCE_START_TIME="05:00"
+export POOL_MACHINE_TYPE="n1-standard-2"
 # Redis pref
 export REDIS_NAME="mr-redis"
 export REDIS_VERSION="REDIS_5_0"
@@ -33,6 +35,8 @@ export TF_VAR_network=${NETWORK}
 export TF_VAR_subnetwork=${SUBNETWORK}
 export TF_VAR_private_ip_name=${PRIVATE_IP_NAME}
 export TF_VAR_cluster_name=${CLUSTER_NAME}
+export TF_VAR_mce_start_time=${MCE_START_TIME}
+export TF_VAR_pool_machine_type=${POOL_MACHINE_TYPE}
 export TF_VAR_redis_name=${REDIS_NAME}
 export TF_VAR_redis_version=${REDIS_VERSION}
 export TF_VAR_redis_size=${REDIS_SIZE}

@@ -15,13 +15,13 @@ module "gke" {
   http_load_balancing        = "true"
   horizontal_pod_autoscaling = "true"
   network_policy             = "true"
-  maintenance_start_time     = "05:00"
+  maintenance_start_time     = var.mce_start_time
   remove_default_node_pool   = "true"
 
   node_pools = [
     {
-      name               = join("-",[random_id.name_suffix.hex,"pool"])#${random_id.name_suffix.hex}"
-      machine_type       = "n1-standard-2"
+      name               = "pool-def"
+      machine_type       = var.pool_machine_type
       min_count          = 1
       max_count          = 10
       local_ssd_count    = 0

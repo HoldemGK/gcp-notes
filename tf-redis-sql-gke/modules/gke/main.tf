@@ -20,7 +20,7 @@ module "gke" {
 
   node_pools = [
     {
-      name               = "pool-${random_id.name_suffix.hex}"
+      name               = "pool-1"#${random_id.name_suffix.hex}"
       machine_type       = "n1-standard-2"
       min_count          = 1
       max_count          = 10

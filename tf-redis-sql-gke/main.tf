@@ -8,7 +8,7 @@ provider "google-beta" {
   project     = var.project_id
   region      = var.region
 }
-
+/*
 module "cloudsql" {
   source           = "./modules/cloudsql"
   network          = var.network
@@ -18,7 +18,7 @@ module "cloudsql" {
   project_id       = var.project_id
   region           = var.region
 }
-/*
+*/
 module "gke" {
   source           = "./modules/gke"
   cluster          = var.cluster_name

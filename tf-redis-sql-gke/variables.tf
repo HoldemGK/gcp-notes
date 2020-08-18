@@ -17,3 +17,7 @@ variable "network" {
 variable "database_version" {
   description = "The database version"
 }
+
+variable "cluster_name" {
+  description = "cluster_name"
+}

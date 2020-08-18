@@ -21,7 +21,7 @@ module "cloudsql" {
 */
 module "gke" {
   source           = "./modules/gke"
-  cluster          = var.cluster_name
+  cluster_name     = var.cluster_name
   network          = var.network
   project          = var.project_id
   region           = var.region

@@ -22,8 +22,8 @@ module "gke" {
     {
       name               = "pool-def"
       machine_type       = var.pool_machine_type
-      min_count          = 1
-      max_count          = 10
+      min_count          = var.min_count
+      max_count          = var.max_count
       local_ssd_count    = 0
       disk_size_gb       = 100
       disk_type          = "pd-standard"

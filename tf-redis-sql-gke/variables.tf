@@ -44,6 +44,14 @@ variable "pool_machine_type" {
   description = "pool_machine_type"
 }
 
+variable "min_count" {
+  description = "GKE min_count"
+}
+
+variable "max_count" {
+  description = "GKE min_count"
+}
+
 variable "redis_name" {
   description = "Redis Name"
 }

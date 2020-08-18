@@ -24,6 +24,8 @@ module "gke" {
   cluster_name     = var.cluster_name
   mce_start_time   = var.mce_start_time
   pool_machine_type= var.pool_machine_type
+  min_count        = var.min_count
+  max_count        = var.max_count
   network          = var.network
   project          = var.project_id
   region           = var.region

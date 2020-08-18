@@ -18,6 +18,8 @@ export DB_INSTANCE_TIER="db-custom-1-3840"
 export CLUSTER_NAME="mr-cluster"
 export MCE_START_TIME="05:00"
 export POOL_MACHINE_TYPE="n1-standard-2"
+export MIN_COUNT=1
+export MAX_COUNT=10
 # Redis pref
 export REDIS_NAME="mr-redis"
 export REDIS_VERSION="REDIS_5_0"
@@ -37,6 +39,8 @@ export TF_VAR_private_ip_name=${PRIVATE_IP_NAME}
 export TF_VAR_cluster_name=${CLUSTER_NAME}
 export TF_VAR_mce_start_time=${MCE_START_TIME}
 export TF_VAR_pool_machine_type=${POOL_MACHINE_TYPE}
+export TF_VAR_min_count=${MIN_COUNT}
+export TF_VAR_max_count=${MAX_COUNT}
 export TF_VAR_redis_name=${REDIS_NAME}
 export TF_VAR_redis_version=${REDIS_VERSION}
 export TF_VAR_redis_size=${REDIS_SIZE}

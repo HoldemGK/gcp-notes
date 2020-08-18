@@ -35,3 +35,7 @@ variable "mce_start_time" {
 variable "pool_machine_type" {
   description = "pool_machine_type"
 }
+
+variable "min_count" {
+  description = "GKE min_count"
+}

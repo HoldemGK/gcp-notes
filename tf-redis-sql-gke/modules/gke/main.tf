@@ -31,7 +31,7 @@ module "gke" {
       auto_repair        = "true"
       auto_upgrade       = "true"
       preemptible        = "true"
-      initial_node_count = 1
+      initial_node_count = 2
     }
   ]
 

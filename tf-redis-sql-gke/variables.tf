@@ -52,6 +52,10 @@ variable "max_count" {
   description = "GKE min_count"
 }
 
+variable "disk_size_gb" {
+  description = "GKE disk_size_gb"
+}
+
 variable "redis_name" {
   description = "Redis Name"
 }

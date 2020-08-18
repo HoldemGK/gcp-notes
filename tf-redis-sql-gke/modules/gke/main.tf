@@ -25,7 +25,7 @@ module "gke" {
       min_count          = var.min_count
       max_count          = var.max_count
       local_ssd_count    = 0
-      disk_size_gb       = 100
+      disk_size_gb       = var.disk_size_gb
       disk_type          = "pd-standard"
       image_type         = "COS"
       auto_repair        = "true"

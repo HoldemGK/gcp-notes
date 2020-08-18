@@ -43,3 +43,7 @@ variable "min_count" {
 variable "max_count" {
   description = "GKE max_count"
 }
+
+variable "disk_size_gb" {
+  description = "GKE disk_size_gb"
+}

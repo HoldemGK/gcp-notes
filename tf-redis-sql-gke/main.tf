@@ -26,6 +26,7 @@ module "gke" {
   pool_machine_type= var.pool_machine_type
   min_count        = var.min_count
   max_count        = var.max_count
+  disk_size_gb     = var.disk_size_gb
   network          = var.network
   project          = var.project_id
   region           = var.region

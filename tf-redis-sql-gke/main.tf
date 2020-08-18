@@ -7,17 +7,17 @@ locals {
 
 // Configure the Google Cloud provider
 provider "google" {
- credentials = file("/home/atos_holdemgk/key-tf.json")
+ credentials = file("/home/keys/key-tf.json")
  project     = local.project_id
  region      = local.region
 }
 
 provider "google-beta" {
-  credentials = file("/home/atos_holdemgk/key-tf.json")
+  credentials = file("/home/keys/key-tf.json")
   project     = local.project_id
   region      = local.region
 }
-
+/*
 module "cloudsql" {
   source           = "./modules/cloudsql"
   database_version = var.database_version # "POSTGRES_11"
@@ -26,17 +26,17 @@ module "cloudsql" {
   project          = local.project_id
   region           = local.region
 }
-
+*/
 module "gke" {
   source           = "./modules/gke"
-  cluster          = "" # Cluster Name
+  cluster          = var.cluster_name # Cluster Name
   network          = local.network
   project          = local.project_id
   region           = local.region
   subnetwork       = local.subnetwork
   zones            = ["us-west1-b", "us-west1-c"]
 }
-
+/*
 module "memorystore" {
   source         = "./modules/memorystore"
   display_name   = "" # Display Name
@@ -50,7 +50,7 @@ module "memorystore" {
   size           = "" # 1
   tier           = "" # STANDARD
 }
-
+*/
 module "vpc" {
   source           = "./modules/vpc"
   project          = local.project_id

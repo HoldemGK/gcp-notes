@@ -5,7 +5,6 @@ module "vpc" {
     project_id   = var.project
     network_name = var.network
     routing_mode = "GLOBAL"
-    delete_default_routes_on_create = false
 
     subnets = [
         {

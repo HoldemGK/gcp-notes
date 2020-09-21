@@ -64,3 +64,29 @@ kubectl top pods -A | sort --reverse --key 4 --numeric`
   - Create SSL cert
   `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=grafana.mysite.ru/O=MyOrganization"
 kubectl -n myapp create secret tls selfsecret --key tls.key --cert tls.crt`
+
+- Deploy a pod that mounts the host filesystem
+`cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath
+spec:
+  containers:
+  - name: hostpath
+    image: google/cloud-sdk:latest
+    command: ["/bin/bash"]
+    args: ["-c", "tail -f /dev/null"]
+    volumeMounts:
+    - mountPath: /rootfs
+      name: rootfs
+  volumes:
+  - name: rootfs
+    hostPath:
+      path: /
+EOF`
+
+`kubectl exec -it hostpath -- bash`
+
+- Google Cloud-SDK container that will be run only on the second node pool with the protections enabled and not run as the root user
+`kubectl run -it --rm gcloud --image=google/cloud-sdk:latest --restart=Never --overrides='{ "apiVersion": "v1", "spec": { "securityContext": { "runAsUser": 65534, "fsGroup": 65534 }, "nodeSelector": { "cloud.google.com/gke-nodepool": "second-pool" } } }' -- bash`

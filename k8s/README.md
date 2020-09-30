@@ -90,3 +90,29 @@ EOF`
 
 - Google Cloud-SDK container that will be run only on the second node pool with the protections enabled and not run as the root user
 `kubectl run -it --rm gcloud --image=google/cloud-sdk:latest --restart=Never --overrides='{ "apiVersion": "v1", "spec": { "securityContext": { "runAsUser": 65534, "fsGroup": 65534 }, "nodeSelector": { "cloud.google.com/gke-nodepool": "second-pool" } } }' -- bash`
+
+- Change Namespace
+`# Add the following to .zshrc/.bashrc...etc
+# Allows setting default namespace while working with kubectl #
+
+alias k='kubectl'
+alias ksn='_f(){k get namespace $1 > /dev/null; if [ $? -eq 1 ]; then return $?; fi;  k config set-context $(k config current-context) --namespace=$1; echo "Namespace: $1"};_f'
+
+#Usage:
+#➜  ~ ksn dev1                                                       (dev-context/dev1)
+#     Context "dev-context" modified.
+#     Namespace: dev1
+
+#➜  ~ ksn ff                                                         (dev-context/dev1)
+#     Error from server (NotFound): namespaces "ff" not found`
+
+- Aliases
+`alias k='kubectl '
+alias kcc='kubectl config current-context'
+alias kdp='kubectl delete po'
+alias kgc='kubectl config get-contexts'
+alias kge='kubectl get events --sort-by='\''{.lastTimestamp}'\'
+alias kgp='kubectl get po'
+alias kl='kubectl logs '
+alias kpf='kubectl port-forward'
+alias ksc='kubectl config use-context'`

@@ -68,6 +68,9 @@ kubectl top pods -A | sort --reverse --key 4 --numeric`
   `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=grafana.mysite.ru/O=MyOrganization"
 kubectl -n myapp create secret tls selfsecret --key tls.key --cert tls.crt`
 
+- Copy file to pod
+`kubectl cp ~/test.html $my_nginx_pod:/usr/share/nginx/html/test.html`
+
 - Deploy a pod that mounts the host filesystem
 `cat <<EOF | kubectl apply -f -
 apiVersion: v1

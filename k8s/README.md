@@ -1,5 +1,8 @@
 # Kubernetes tips & tricks
 
+- Allow autocomplete
+`source <(kubectl completion bash)`
+
 - Problems pods
 `kubectl get pods -A --field-selector=status.phase!=Running | grep -v Complete`
 

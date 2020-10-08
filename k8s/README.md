@@ -1,5 +1,18 @@
 # Kubernetes tips & tricks
 
+- Ensure your user account has the cluster-admin role
+`kubectl create clusterrolebinding user-admin-binding \
+   --clusterrole=cluster-admin \
+   --user=$(gcloud config get-value account)`
+
+- Create a Kubernetes service account called Tiller
+`kubectl create serviceaccount tiller --namespace kube-system`
+
+- Grant the Tiller service account the cluster-admin role
+`kubectl create clusterrolebinding tiller-admin-binding \
+   --clusterrole=cluster-admin \
+   --serviceaccount=kube-system:tiller`
+
 - Allow autocomplete
 `source <(kubectl completion bash)`
 
@@ -36,6 +49,12 @@ kubectl top pods -A | sort --reverse --key 4 --numeric`
 
 - Get manifest before start
 `kubectl run test --image=grafana/grafana --dry-run -o yaml`
+
+- Run interactive shell to a temporary Pod
+`kubectl run redis-test --rm --tty -i --restart='Never' \
+    --env REDIS_PW=$REDIS_PW \
+    --env REDIS_IP=$REDIS_IP \
+    --image docker.io/bitnami/redis:4.0.12 -- bash`
 
 - Resource description
 `kubectl explain hpa`

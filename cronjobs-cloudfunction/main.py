@@ -1,5 +1,5 @@
 from requests import get
-from utils import send_email
+from email_utils import send_email
 
 api_url = 'https://hacker-news.firebaseio.com/v0/'
 top_stories_url = api_url + 'topstories.json'

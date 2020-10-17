@@ -9,7 +9,7 @@ def scan_hacker_news(request):
     top_stories = get(top_stories_url).json()
     cloud_stories = []
 
-    for story_id in topstories:
+    for story_id in top_stories:
         story = get(item_url.format(story_id)).json()
         if 'cloud' in story['title'].lower():
             cloud_stories.append(story)

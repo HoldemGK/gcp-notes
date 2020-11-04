@@ -86,4 +86,63 @@ reset slave;
 # Configure the replication process
 CHANGE MASTER TO MASTER_HOST='source-mysql-replica', \
   MASTER_USER='sourcereplicator', MASTER_PASSWORD='solution-admin', \
-  MASTER_LOG_FILE=''
+  MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=154;
+
+start slave;
+SELECT * FROM source_db.source_table;
+show slave status \G
+exit
+
+# Creating the HAProxy instance
+gcloud compute instances create haproxy --image-family=ubuntu-1604-lts \
+  --image-project=ubuntu-os-cloud --tags=haproxy,http-server \
+  --zone=$ZONE --private-network-ip=10.128.0.100
+
+gcloud compute ssh haproxy
+sudo apt-get update
+sudo apt-get install -y haproxy=1.6.3-1
+sudo apt-get install -y mysql-client
+exit
+
+gcloud compute firewall-rules create haproxy-mysql --allow=tcp:3306 \
+  --source-tags haproxy --target-tags target-mysql,source-mysql
+
+gcloud compute firewall-rules create haproxy-admin --allow=tcp:80 \
+  --source-ranges=0.0.0.0/0 --target-tags haproxy
+
+# Set up HAProxy authentication for the target-mysql-primary instance
+gcloud compute ssh target-mysql-primary
+# Create user haproxy_check and haproxy_root
+mysql -uroot -psolution-admin -e "INSERT INTO mysql.user \
+  (Host,User,ssl_cipher,x509_issuer,x509_subject) values \
+  ('10.128.0.100','haproxy_check','','',''); FLUSH PRIVILEGES";
+
+PROJECT=`curl \
+http://metadata.google.internal/computeMetadata/v1/project/project-id -H "Metadata-Flavor: Google"`
+HA_PROXY_FQDN=haproxy.c.$PROJECT.internal
+mysql -uroot -psolution-admin -e "GRANT ALL PRIVILEGES ON *.* TO \
+  'haproxy_root'@'"$HA_PROXY_FQDN"' IDENTIFIED BY 'solution-admin' WITH \
+  GRANT OPTION; FLUSH PRIVILEGES;"
+exit
+
+# Set up HAProxy authentication for the source-mysql-primary instance
+gcloud compute ssh source-mysql-primary
+mysql -uroot -psolution-admin -e "INSERT INTO mysql.user \
+  (Host,User,ssl_cipher,x509_issuer,x509_subject) values \
+  ('10.128.0.100','haproxy_check','','',''); FLUSH PRIVILEGES;"
+
+PROJECT=`curl \
+http://metadata.google.internal/computeMetadata/v1/project/project-id -H "Metadata-Flavor: Google"`
+HA_PROXY_FQDN=haproxy.c.$PROJECT.internal
+mysql -uroot -psolution-admin -e "GRANT ALL PRIVILEGES ON *.* TO \
+  'haproxy_root'@'"$HA_PROXY_FQDN"' IDENTIFIED BY 'solution-admin' WITH \
+  GRANT OPTION; FLUSH PRIVILEGES;"
+exit
+
+# Test connectivity between HAProxy and the MySQL primary instances
+gcloud compute ssh haproxy
+mysql -h source-mysql-primary -u haproxy_root -psolution-admin -e "SHOW DATABASES"
+mysql -h target-mysql-primary -u haproxy_root -psolution-admin -e "SHOW DATABASES"
+
+# Create the HAProxy configuration file and point it to the source-mysql-primary instance
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bkp

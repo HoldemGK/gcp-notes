@@ -1,3 +1,4 @@
+#!/bin/bash
 # Migrating a MySQL Cluster to Compute Engine Using HAProxy
 
 export PROJECT=${DEVSHELL_PROJECT_ID}
@@ -146,3 +147,14 @@ mysql -h target-mysql-primary -u haproxy_root -psolution-admin -e "SHOW DATABASE
 
 # Create the HAProxy configuration file and point it to the source-mysql-primary instance
 sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bkp
+sudo bash mysql-migration/config_haproxy.sh
+sudo servuce haproxy reload
+
+# Testing your deployment
+mysql -h 127.0.0.1 -u haproxy_root -psolution-admin -e "SHOW DATABASES"
+exit
+
+# Get public IP address of the HAProxy instance
+gcloud compute instances describe haproxy \
+  --format='value(networkInterfaces[0].accessConfigs[0]natIP)' \
+  --zone=$ZONE

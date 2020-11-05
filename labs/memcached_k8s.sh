@@ -65,3 +65,7 @@ spec:
 EOF
 kubectl get pods
 POD=$(kubectl get pods -l app=sample-application-py -o jsonpath="{.items[0].metadata.name}")
+NOD=$(kubectl exec -it $POD -- sh -c 'echo $NODE_NAME')
+kubectl run -it --rm alpine --image=alpine:3.6 --restart=Never telnet $NOD
+get anotherkey
+quit

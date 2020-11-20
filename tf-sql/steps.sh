@@ -21,3 +21,4 @@ CONN_NAME="${PROJECT}:${ZONE}:${DB_NAME}"
 ./cloud_sql_proxy -instances=${CONN_NAME}=tcp:3306
 
 echo PASSWORD=$(terraform output -json | jq -r '.generated_user_password.value')
+mysql -u default -p $PASSWORD --host 127.0.0.1 default

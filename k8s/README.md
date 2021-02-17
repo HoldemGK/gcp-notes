@@ -1,5 +1,12 @@
 # Kubernetes tips & tricks
 
+- Diagnosing an RBAC misconfiguration
+`kubectl get pods -l app=pod-labeler
+kubectl describe pod -l app=pod-labeler | tail -n 20
+kubectl logs -l app=pod-labeler
+kubectl get rolebinding pod-labeler -oyaml
+kubectl get role pod-labeler -oyaml`
+
 - Ensure your user account has the cluster-admin role
 `kubectl create clusterrolebinding user-admin-binding \
    --clusterrole=cluster-admin \

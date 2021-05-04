@@ -26,3 +26,11 @@ gcloud beta builds triggers import --source=../cloudbuilder.yaml
 
 # create pub sub
 gcloud pubsub topics create terraform-build-topic
+
+# create cloud functions service account
+gcloud iam service-accounts create terraform-builder --description="Cloud Function's Service Account to trigger build" --display-name="Terraform Builder"
+
+#give Service account required perms
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member serviceAccount:terraform-builder@$PROJECT_ID.iam.gserviceaccount.com \
+  --role roles/cloudbuild.builds.editor

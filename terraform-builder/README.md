@@ -12,7 +12,7 @@ A terraform container builder that checks for new terraform versions and builds 
 
 The steps are as follows:
 - *source repository configuration*
-- get the current project from `cloud shell` environment, if you're not using cloud shell then make sure you are using an authenticated [gcloud](https://cloud.google.com/sdk) environment and set the `$DEVSHELL_PROJECT_ID` environment variable
+- get the current project from `cloud shell` environment, if you're not using cloud shell then make sure you are using an authenticated [gcloud](https://cloud.google.com/sdk) environment and set the `$PROJECT_ID` environment variable
 - creates a [source reposity](https://source.cloud.google.com/) in the current project called `terraform-builder`
 - sets up the git authentication to push this directory into that source repository
 - sets the google remote as the newly created repo

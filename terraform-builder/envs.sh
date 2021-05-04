@@ -12,8 +12,10 @@ function statusCheck(){
 export REGION=us-east1
 export ZONE=${REGION}-b
 export PROJECT_ID=$(gcloud info --format='value(config.project)')
+export REPO_NAME=terraform-builder
 
 # Call the function statusCheck to validate the environment
 statusCheck "$REGION" "REGION"
 statusCheck "$ZONE" "ZONE"
 statusCheck "$PROJECT_ID" "PROJECT_ID"
+statusCheck "$REPO_NAME" "REPO_NAME" 

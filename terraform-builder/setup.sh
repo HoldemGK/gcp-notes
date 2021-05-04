@@ -15,7 +15,7 @@ git remote add google https://source.developers.google.com/p/${PROJECT_ID}/r/${R
 git push google master
 
 #create the build trigger in cloud build
-gcloud beta builds triggers create cloud-source-repositoies \
+gcloud beta builds triggers create cloud-source-repositories \
   --build-config=cloudbuild.yaml --repo=${REPO_NAME} \
   --branch-pattern=^master$ --description="terraform-builder-trigger"
 
@@ -23,3 +23,6 @@ gcloud beta builds triggers create cloud-source-repositoies \
 gcloud beta builds triggers export terraform-builder-trigger --destination=../cloudbuilder.yaml
 echo disabled: True >> ../cloudbuilder.yaml
 gcloud beta builds triggers import --source=../cloudbuilder.yaml
+
+# create pub sub
+gcloud pubsub topics create terraform-build-topic

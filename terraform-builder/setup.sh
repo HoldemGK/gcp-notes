@@ -53,3 +53,11 @@ gcloud pubsub topics create gcr || true
 #split out notifier
 gcloud iam service-accounts create terraform-build-notifier --description="Cloud Function's Service Account for build noficiations" \
   --display-name="Terraform Builder Notifier"
+
+#set up secrets store
+gcloud secrets create sendgridapikey --replication-policy="automatic" \
+  --labels=terraform-builder=secrets
+
+gcloud secrets add-iam-policy-binding sendgridapikey \
+  --member serviceAccount:terraform-build-notifier@${PROJECT_ID}.iam.gserviceaccount.com \
+  --role="roles/sexretmanager.secretAccessor"

@@ -52,4 +52,4 @@ gcloud pubsub topics create gcr || true
 
 #split out notifier
 gcloud iam service-accounts create terraform-build-notifier --description="Cloud Function's Service Account for build noficiations" \
-  --disable-name="Terraform Builder Notifier"
+  --display-name="Terraform Builder Notifier"

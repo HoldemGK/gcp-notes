@@ -13,9 +13,14 @@ export REGION=us-east1
 export ZONE=${REGION}-b
 export PROJECT_ID=$(gcloud info --format='value(config.project)')
 export REPO_NAME=terraform-builder
+#Or hardcode on anover emails
+export SENDER=$(gcloud info --format='value(config.account)')
+export RECIPIENT=$(gcloud info --format='value(config.account)')
 
 # Call the function statusCheck to validate the environment
 statusCheck "$REGION" "REGION"
 statusCheck "$ZONE" "ZONE"
 statusCheck "$PROJECT_ID" "PROJECT_ID"
-statusCheck "$REPO_NAME" "REPO_NAME" 
+statusCheck "$REPO_NAME" "REPO_NAME"
+statusCheck "$SENDER" "SENDER"
+statusCheck "$RECIPIENT" "RECIPIENT"

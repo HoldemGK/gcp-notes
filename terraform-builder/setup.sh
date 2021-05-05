@@ -60,4 +60,8 @@ gcloud secrets create sendgridapikey --replication-policy="automatic" \
 
 gcloud secrets add-iam-policy-binding sendgridapikey \
   --member serviceAccount:terraform-build-notifier@${PROJECT_ID}.iam.gserviceaccount.com \
-  --role="roles/sexretmanager.secretAccessor"
+  --role="roles/secretmanager.secretAccessor"
+
+#set sendgrid API key here
+(echo SENDER=${SENDER}
+ echo RECIPIENT=${RECIPIENT}) | gcloud secrets versions add sendgridapikey --data-file=-

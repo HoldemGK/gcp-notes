@@ -42,3 +42,10 @@ gcloud functions deploy terraform-builder \
   --memory=128MB --update-labels=terraform-builder=cloudfunction --entry-point=trigger_build \
   --runtime=python37 --service-account=terraform-builder@${PROJECT_ID}.iam.gserviceaccount.com \
   --timeout=300 --quiet
+
+# create cron schedule
+gcloud scheduler jobs create pubsub terraform-builder-cron --schedule="57 3 * * *" --topic=terraform-build-topic --message-body="gobuild"
+
+#Set up alerting
+#set up build notification, set up the topic, this should exist if container registry has ever been used
+gcloud pubsub topics create gcr || true

@@ -3,7 +3,7 @@ import os
 import traceback
 
 def trigger_build(data, context):
-    from google.cloud.devtools import cloudbuild
+    from google.cloud.devtools import cloudbuild_vq
     client = cloudbuild.CloudBuildClient()
     project_id = os.environ['PROJECT_ID']
     trigger_id = 'terraform-builder-trigger'

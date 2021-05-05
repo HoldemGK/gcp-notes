@@ -65,3 +65,11 @@ gcloud secrets add-iam-policy-binding sendgridapikey \
 #set sendgrid API key here
 (echo SENDER=${SENDER}
  echo RECIPIENT=${RECIPIENT}) | gcloud secrets versions add sendgridapikey --data-file=-
+
+#create cloud function for notifier
+gcloud functions deploy build-notifications \
+  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/sendmail \
+  --trigger-topic=gcr --max-instance=1 --set-env-vars=SENDER=${SENDER},RECIPIENT=${RECIPIENT} \
+  --memory=128MB --update-labels=terraform-builder=sendmail --entry-point=sendmail \
+  --reuntime=python37 --service-account=terraform-build-notifier@${PROJECT_ID}.iam.gserviceaccount.com \
+  --timeout=300 --quiet

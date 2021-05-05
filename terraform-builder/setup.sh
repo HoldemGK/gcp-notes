@@ -6,7 +6,7 @@ gcloud services enable cloudbuild.googleapis.com
 gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable cloudscheduler.googleapis.com
 gcloud services enable secretmanager.googleapis.com
-gcloud app create --region=$REGION
+gcloud app create --region=${REGION}
 
 #create the source repo to slave off the github repo
 gcloud source repos create ${REPO_NAME}
@@ -31,6 +31,14 @@ gcloud pubsub topics create terraform-build-topic
 gcloud iam service-accounts create terraform-builder --description="Cloud Function's Service Account to trigger build" --display-name="Terraform Builder"
 
 #give Service account required perms
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member serviceAccount:terraform-builder@$PROJECT_ID.iam.gserviceaccount.com \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+  --member serviceAccount:terraform-builder@${PROJECT_ID}.iam.gserviceaccount.com \
   --role roles/cloudbuild.builds.editor
+
+#create cloud function
+gcloud functions deploy terraform-builder \
+  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/cloud-function \
+  --trigger-topic=terraform-build-topic --max-instances=1 \
+  --memory=128MB --update-labels=terraform-builder=cloudfunction --entry-point=trigger_build \
+  --runtime=python37 --service-account=terraform-builder@${PROJECT_ID}.iam.gserviceaccount.com \
+  --timeout=300 --quiet

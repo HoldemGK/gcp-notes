@@ -37,7 +37,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 
 #create cloud function
 gcloud functions deploy terraform-builder \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/cloud-function \
+  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/cloud-function \
   --trigger-topic=terraform-build-topic --max-instances=1 \
   --memory=128MB --update-labels=terraform-builder=cloudfunction --entry-point=trigger_build \
   --runtime=python37 --service-account=terraform-builder@${PROJECT_ID}.iam.gserviceaccount.com \

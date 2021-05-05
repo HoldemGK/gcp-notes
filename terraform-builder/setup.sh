@@ -49,3 +49,7 @@ gcloud scheduler jobs create pubsub terraform-builder-cron --schedule="57 3 * * 
 #Set up alerting
 #set up build notification, set up the topic, this should exist if container registry has ever been used
 gcloud pubsub topics create gcr || true
+
+#split out notifier
+gcloud iam service-accounts create terraform-build-notifier --description="Cloud Function's Service Account for build noficiations" \
+  --disable-name="Terraform Builder Notifier"

@@ -11,7 +11,7 @@ gcloud app create --region=${REGION}
 #create the source repo to slave off the github repo
 gcloud source repos create ${REPO_NAME}
 git config --global credential.https://sourcedevelopers.google.com.helper gcloud.sh
-git remote add google https://source.developers.google.com/p/${PROJECT_ID}/r/${REPO_NAME}
+git remote add google ${REPO_LINK}/p/${PROJECT_ID}/r/${REPO_NAME}
 git push google master
 
 #create the build trigger in cloud build
@@ -37,7 +37,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 
 #create cloud function
 gcloud functions deploy terraform-builder \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/cloud-function \
+  --source ${REPO_LINK}/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/cloud-function \
   --trigger-topic=terraform-build-topic --max-instances=1 \
   --memory=128MB --update-labels=terraform-builder=cloudfunction --entry-point=trigger_build \
   --runtime=python37 --service-account=terraform-builder@${PROJECT_ID}.iam.gserviceaccount.com \
@@ -68,7 +68,7 @@ gcloud secrets add-iam-policy-binding sendgridapikey \
 
 #create cloud function for notifier
 gcloud functions deploy build-notifications \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/sendmail \
+  --source ${REPO_LINK}/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/terraform-builder/sendmail \
   --trigger-topic=gcr --max-instances=1 --set-env-vars=SENDER=${SENDER},RECIPIENT=${RECIPIENT} \
   --memory=128MB --update-labels=terraform-builder=sendmail --entry-point=sendmail \
   --runtime=python37 --service-account=terraform-build-notifier@${PROJECT_ID}.iam.gserviceaccount.com \

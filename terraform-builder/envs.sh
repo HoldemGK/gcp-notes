@@ -16,6 +16,7 @@ export REPO_NAME=terraform-builder
 #Or hardcode on anover emails
 export SENDER=$(gcloud info --format='value(config.account)')
 export RECIPIENT=$(gcloud info --format='value(config.account)')
+export REPO_LINK='https://source.developers.google.com'
 
 # Call the function statusCheck to validate the environment
 statusCheck "$REGION" "REGION"
@@ -24,3 +25,4 @@ statusCheck "$PROJECT_ID" "PROJECT_ID"
 statusCheck "$REPO_NAME" "REPO_NAME"
 statusCheck "$SENDER" "SENDER"
 statusCheck "$RECIPIENT" "RECIPIENT"
+statusCheck "$REPO_LINK" "REPO_LINK"

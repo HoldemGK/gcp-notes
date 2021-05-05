@@ -1,0 +1,2 @@
+sendgrid
+google-cloud-secret-manager

@@ -16,7 +16,7 @@ git push google master
 
 #create the build trigger in cloud build
 gcloud beta builds triggers create cloud-source-repositories \
-  --build-config=cloudbuild.yaml --repo=${REPO_NAME} \
+  --build-config=terraform-builder/cloudbuild.yaml --repo=${REPO_NAME} \
   --branch-pattern=^master$ --description="terraform-builder-trigger"
 
 #disable the trigger, we will run it from cloud functions

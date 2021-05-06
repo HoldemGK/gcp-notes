@@ -50,5 +50,5 @@ def sendmail(event, context):
         raise SystemExit('data key not present in JSON')
 
 if __name__ == "__main__":
-    event = {data:{"action":"INSERT","digest":"gcr.io/project_id/terraform@sha256:hash","tag":"gcr.io/project_id/terraform:latest"}}
+    event = {'data':{"action":"INSERT","digest":"gcr.io/project_id/terraform@sha256:hash","tag":"gcr.io/project_id/terraform:latest"}}
     sendmail(event,None)

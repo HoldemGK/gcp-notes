@@ -19,7 +19,7 @@ def sendmail(event, context):
     print("Received pubsub message")
     print(event)
     if 'data' in event:
-        build = json.loads(str(base64.b64decode(json.dumps(event['data'])).decode('utf-8')))
+        build = json.loads(str(base64.b64decode(event['data']).decode('utf-8')))
         print(build)
         try:
             project_id = os.environ['PROJECT_ID']

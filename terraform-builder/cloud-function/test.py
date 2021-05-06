@@ -1,4 +1,4 @@
-def daily_catalogo(event, context):
+def trigger_build(event, context):
     from google.cloud.devtools import cloudbuild_v1
     import os
     client = cloudbuild_v1.CloudBuildClient()
@@ -7,3 +7,6 @@ def daily_catalogo(event, context):
     trigger_id = 'terraform-builder-trigger'
     source = {'branch_name': 'master'}
     response = client.run_build_trigger(project_id, trigger_id, source)
+
+if __name__=="__main__":
+    trigger_build(event=None,context=None)

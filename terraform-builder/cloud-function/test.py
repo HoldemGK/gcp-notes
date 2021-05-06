@@ -8,6 +8,7 @@ def trigger_build(event, context):
       project_id = "test-tf-bulder",
       trigger_id = "terraform-builder-trigger",
       source = source)
+    print("Called Trigger")
 
 if __name__=="__main__":
     trigger_build(event=None,context=None)

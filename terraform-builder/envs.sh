@@ -10,8 +10,8 @@ export RECIPIENT=$(gcloud info --format='value(config.account)')
 export REPO_LINK='https://source.developers.google.com'
 
 # Update the compute environment
-gcloud config set compute/region $GCP_REGION
-gcloud config set compute/zone  $GCP_ZONE
+gcloud config set compute/region $REGION
+gcloud config set compute/zone  $ZONE
 
 # ---  Validate environment variables - Tick/OK, Cross/Not OK
 function statusCheck(){

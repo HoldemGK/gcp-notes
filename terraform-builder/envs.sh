@@ -11,7 +11,7 @@ export REPO_LINK='https://source.developers.google.com'
 
 # Update the compute environment
 Yes | gcloud config set compute/region $REGION
-gcloud config set compute/zone  $ZONE
+Yes | gcloud config set compute/zone  $ZONE
 
 # ---  Validate environment variables - Tick/OK, Cross/Not OK
 function statusCheck(){

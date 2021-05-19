@@ -1,0 +1,41 @@
+---
+- name: Install Oracle 19c Database
+  hosts: 127.0.0.1
+  gather_facts: false
+  tasks:
+     - name: Unzip Oracle 19c Installer
+       command: sh /u01/oracle-toolkit/scripts/1_setup.sh
+       ignore_errors: yes
+
+     - name: Install Oracle 19c Software Only
+       command: sh /u01/oracle-toolkit/scripts/2_install_sw.sh
+       register: install_db_software
+       args:
+       failed_when: "'Successfully Setup Software with warning(s).' not in install_db_software.stdout"   
+       ignore_errors: yes    
+
+     - name: Perform Root Actions
+       command: sh /u01/oracle-toolkit/scripts/3_root_actions.sh
+       become: yes
+       become_user: root       
+       ignore_errors: yes
+
+     - name: Start Listener and Run DBCA
+       command: sh /u01/oracle-toolkit/scripts/4_lsnr_dbca.sh
+       ignore_errors: yes
+
+     - name: Update oratab
+       command: sh /u01/oracle-toolkit/scripts/5_oratab.sh
+       become: yes
+       become_user: root       
+       ignore_errors: yes
+
+     - name: Set PDB to Open 
+       command: sh /u01/oracle-toolkit/scripts/6_pdb_open.sh
+       ignore_errors: yes
+
+     - name: Create DB Service
+       command: sh /u01/oracle-toolkit/scripts/7_set_dbora_service.sh
+       become: yes
+       become_user: root
+       ignore_errors: yes

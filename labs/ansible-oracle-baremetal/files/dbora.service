@@ -1,0 +1,13 @@
+[Unit]
+Description=Oracle Database Service
+After=network.target
+ 
+[Service]
+Type=forking
+ExecStart=/u01/app/oracle/product/19.3.0/dbhome_1/bin/dbstart /u01/app/oracle/product/19.3.0/dbhome_1
+ExecStop=/u01/app/oracle/product/19.3.0/dbhome_1/bin/dbshut /u01/app/oracle/product/19.3.0/dbhome_1
+User=oracle
+TimeoutSec=300s
+ 
+[Install]
+WantedBy=multi-user.target

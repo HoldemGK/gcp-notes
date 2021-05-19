@@ -120,6 +120,9 @@ EOF`
 
 `kubectl exec -it hostpath -- bash`
 
+- To run the Microsoft SQL tools container
+`kubectl run sqltools --image=microsoft/mssql-tools -ti --restart=Never --rm=true -- /bin/bash`
+
 - Google Cloud-SDK container that will be run only on the second node pool with the protections enabled and not run as the root user
 `kubectl run -it --rm gcloud --image=google/cloud-sdk:latest --restart=Never --overrides='{ "apiVersion": "v1", "spec": { "securityContext": { "runAsUser": 65534, "fsGroup": 65534 }, "nodeSelector": { "cloud.google.com/gke-nodepool": "second-pool" } } }' -- bash`
 

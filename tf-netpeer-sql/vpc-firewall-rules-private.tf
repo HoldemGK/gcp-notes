@@ -37,3 +37,17 @@ resource "google_compute_firewall" "private-allow-ping" {
     var.subnet_cidr_private
   ]
 }
+
+# allow MySQL only from public subnet
+resource "google_compute_firewall" "private-allow-mysql" {
+  name    = "${google_compute_network.private-vpc.name}-allow-mysql"
+  network = google_compute_network.private-vpc.name
+  allow {
+    protocol = "tcp"
+    ports    = ["3306"]
+  }
+  source_ranges = [
+    "${var.subnet_cidr_public}"
+  ]
+  target_tags = ["allow-mysql"]
+}

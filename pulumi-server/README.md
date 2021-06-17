@@ -10,3 +10,7 @@ Next, Pulumi requires default application credentials to interact with your Goog
 `bash
 gcloud auth application-default login
 `
+The pulumi new command creates a new Pulumi project with some basic scaffolding based on the cloud and language specified.
+`bash
+pulumi new gcp-python
+`

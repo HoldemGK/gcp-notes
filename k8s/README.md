@@ -1,5 +1,12 @@
 # Kubernetes tips & tricks
 
+- Switch to the context
+`gsutil cp gs://$DEVSHELL_PROJECT_ID-kops-onprem/config ~/.kube/onprem-config
+
+export KUBECONFIG=~/.kube/config:~/.kube/onprem-config
+
+kubectx onprem.k8s.local`
+
 - Diagnosing an RBAC misconfiguration
 `kubectl get pods -l app=pod-labeler
 kubectl describe pod -l app=pod-labeler | tail -n 20
@@ -137,9 +144,6 @@ alias ksn='_f(){k get namespace $1 > /dev/null; if [ $? -eq 1 ]; then return $?;
 #➜  ~ ksn dev1                                                       (dev-context/dev1)
 #     Context "dev-context" modified.
 #     Namespace: dev1
-
-#➜  ~ ksn ff                                                         (dev-context/dev1)
-#     Error from server (NotFound): namespaces "ff" not found`
 
 - Aliases
 `alias k='kubectl '

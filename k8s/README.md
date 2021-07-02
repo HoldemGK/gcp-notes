@@ -7,6 +7,19 @@ export KUBECONFIG=~/.kube/config:~/.kube/onprem-config
 
 kubectx onprem.k8s.local`
 
+- Generate keys, and create secrets on your clusters
+   generate an SSH keypair
+`ssh-keygen -t rsa -b 4096 \
+  -C "$GCLOUD_EMAIL" \
+  -N '' \
+  -f $HOME/.ssh/id_rsa.acm`
+
+  Save the private key to a secret on each cluster
+`kubectx gke
+kubectl create secret generic git-creds \
+    --namespace=config-management-system \
+    --from-file=ssh=$HOME/.ssh/id_rsa.acm`
+
 - Diagnosing an RBAC misconfiguration
 `kubectl get pods -l app=pod-labeler
 kubectl describe pod -l app=pod-labeler | tail -n 20

@@ -2,6 +2,9 @@
 
 import pulumi
 import pulumi_gcp as gcp
+with open(path_script, 'r') as init_script:
+    data = init_script.read()
+script = data
 config = pulumi.Config()
 instance_zone = config.require('zone')
 instance_name = config.require('instance_name')
@@ -39,5 +42,5 @@ instance = gcp.compute.Instance(instance_name,
     metadata={
         "foo": "bar",
     },
-    metadata_startup_script="echo hi > /test.txt",
+    metadata_startup_script=script
     ))

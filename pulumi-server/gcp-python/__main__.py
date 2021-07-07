@@ -2,13 +2,17 @@
 
 import pulumi
 import pulumi_gcp as gcp
+config = pulumi.Config()
+instance_zone = config.require('zone')
+instance_name = config.require('instance_name')
+instance_type = config.require('instance_type')
+instance_image = config.require('instance_image')
+instance_disk_size = config.require('instance_disk_size')
 
-default_account = gcp.service_account.Account("defaultAccount",
-    account_id="service_account_id",
-    display_name="Service Account")
-default_instance = gcp.compute.Instance("dedicated-server",
-    machine_type="e2-medium",
-    zone="europe-north1-b",
+
+instance = gcp.compute.Instance(instance_name,
+    machine_type=instance_type,
+    zone=instance_zone,
     tags=[
         "steam-server"
     ],
@@ -17,9 +21,6 @@ default_instance = gcp.compute.Instance("dedicated-server",
             image="ubuntu-os-cloud/ubuntu-2004-lts",
         ),
     ),
-    scratch_disks=[gcp.compute.InstanceScratchDiskArgs(
-        interface="SCSI",
-    )],
     network_interfaces=[gcp.compute.InstanceNetworkInterfaceArgs(
         network="default",
         access_configs=[gcp.compute.InstanceNetworkInterfaceAccessConfigArgs()],
@@ -28,7 +29,4 @@ default_instance = gcp.compute.Instance("dedicated-server",
         "foo": "bar",
     },
     metadata_startup_script="echo hi > /test.txt",
-    service_account=gcp.compute.InstanceServiceAccountArgs(
-        email=default_account.email,
-        scopes=["cloud-platform"],
     ))

@@ -102,3 +102,5 @@ gcloud compute routers create crnatconsumer --network=vpc-demo-consumer --region
 gcloud compute routers nats create cloudnatconsumer \
   --router=crnatconsumer --auto-allocate-nat-external-ips \
   --nat-all-subnet-ip-ranges --enable-logging --region=us-west2
+
+# Create test instance VM

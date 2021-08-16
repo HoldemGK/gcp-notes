@@ -104,3 +104,68 @@ gcloud compute routers nats create cloudnatconsumer \
   --nat-all-subnet-ip-ranges --enable-logging --region=us-west2
 
 # Create test instance VM
+gcloud compute instances create test-instance-1 \
+  --zone=us-west2-a \
+  --image-family=debian-9 \
+  --image-project=debian-cloud \
+  --subnet=consumer-subnet --no-address \
+  --metadata-from-file=startup-script="./startup-consumer.sh"
+
+# Create TCP service attachment
+gcloud compute forwarding-rules create vpc-consumer-psc-fr-tcp \
+  --region=us-west2 --network=vpc-demo-consumer \
+  --address=vpc-consumer-psc-tcp \
+  --target-servicce-attachment=projects/${PROD_PROJ}/regions/us-west2/serviceAttacments/vpc-demo-psc-west2-tcp
+
+gcloud compute forwarding-rules describe vpc-consumer-psc-fr-tcp --region=us-west2
+
+# TCP Validation
+gcloud compute ssh www-01
+sudo tcpdump -i any net 192.168.0.0/16 -n
+exit
+
+gcloud compute ssh www-02
+sudo tcpdump -i any net 192.168.0.0/16 -n
+exit
+
+gcloud compute ssh test-instance-1
+sudo tcpdump -i any host 10.0.60.100 -n
+curl -v 10.0.60.100
+exit
+
+# Enable Proxy Protocol
+gcloud compute service-attachments delete vpc-demo-psc-west2-tcp \
+  --region=us-west2 --quiet
+
+gcloud compute service-attachments list
+gcloud compute service-attachments create vpc-demo-psc-west2-tcp \
+  --region=us-west2 --producer-forwarding-rule=vpc-demo-www-ilb-tcp \
+  --connection-preference=ACCEPT_AUTOMATIC \
+  --nat-subnets=vpc-demo-us-west2-psc-tcp \
+  --enable-proxy-protocol
+
+gcloud compute service-attachments describe vpc-demo-psc-west2-tcp \
+  --region=us-west2 | grep -i enableProxyProtocol:
+
+gcloud compute forwarding-rules delete vpc-consumer-psc-fr-tcp --region=us-west2 --quiet
+
+# Recreate the TCP forwarding rules to associate with the previously created (producer) service attachment
+gcloud compute forwarding-rules create vpc-consumer-psc-fr-tcp \
+  --region=us-west2 --network=vpc-demo-consumer \
+  --address=vpc-consumer-psc-tcp \
+  --target-service-attachment=projects/$PROD_PROJ/regions/us-west2/serviceAttachments/vpc-demo-psc-west2-tcp
+
+# Proxy Protocol Validation
+gcloud compute ssh www-01
+sudo tcpdump -nnvvXSs 1514 net 192.168.0.0/16
+exit
+
+gcloud compute ssh www-02
+sudo tcpdump -nnvvXSs 1514 net 192.168.0.0/16
+exit
+
+gcloud compute ssh test-instance-1
+curl 10.0.60.100
+exit
+
+gcloud compute forwarding-rules describe vpc-consumer-psc-fr-tcp --region=us-west2

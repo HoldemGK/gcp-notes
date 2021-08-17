@@ -169,3 +169,10 @@ curl 10.0.60.100
 exit
 
 gcloud compute forwarding-rules describe vpc-consumer-psc-fr-tcp --region=us-west2
+
+# Connection Policy
+gcloud compute service-attachments update vpc-demo-psc-west2-tcp \
+  --region=us-west2 --connection-preference ACCEPT_MANUAL
+
+gcloud compute service-attachments update vpc-demo-psc-west2-tcp \
+  --region=us-west2 --consumer-accept-list $CONSUMER_PROJ=20

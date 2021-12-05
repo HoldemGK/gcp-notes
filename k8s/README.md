@@ -15,7 +15,9 @@ kubectl config set-credentials admin
 
 kubectl config set-context context_name \
   --cluster=cluster_name \
-  --user=admin`
+  --user=admin
+
+kubectl config use-context context_name`
 
 - Switch to the context GKE
 `gsutil cp gs://$DEVSHELL_PROJECT_ID-kops-onprem/config ~/.kube/onprem-config

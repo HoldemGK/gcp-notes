@@ -1,6 +1,23 @@
 # Kubernetes tips & tricks
 
-- Switch to the context
+- Switch to the context Classic
+
+`ssh -L 6443:localhost:6443 user@${CLUSTER_IP} #Create SSH tunnel
+
+kubectl config set-cluster cluster_name \
+  --certificate-authority=ca.pem \
+  --embed-certs=true \
+  --server=https://localhost:6443
+
+kubectl config set-credentials admin
+  --client-certificate=admin.pem \
+  --client-key=admin-key.pem
+
+kubectl config set-context cluster_name \
+  --cluster=cluster_name \
+  --user=admin`
+
+- Switch to the context GKE
 `gsutil cp gs://$DEVSHELL_PROJECT_ID-kops-onprem/config ~/.kube/onprem-config
 
 export KUBECONFIG=~/.kube/config:~/.kube/onprem-config

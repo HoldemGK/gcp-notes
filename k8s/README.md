@@ -13,7 +13,7 @@ kubectl config set-credentials admin
   --client-certificate=admin.pem \
   --client-key=admin-key.pem
 
-kubectl config set-context cluster_name \
+kubectl config set-context context_name \
   --cluster=cluster_name \
   --user=admin`
 

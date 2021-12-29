@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become_user: root
+  become: true
+  tasks:
+    # adding retries and delays for apt to catch up otherwise you get this error: Could not get lock /var/lib/dpkg/lock-frontend
+    - name: Install Docker Compose
+      apt:
+        update_cache: yes
+        pkg:
+        - docker-compose
+      register: result
+      until: result is not failed
+      retries: 20
+      delay: 30
+    - name: Install Docker module for Python
+      pip:
+        name: docker
+    - name: Adding user '{{ user }}' to Docker group
+      user: 
+        name: '{{ user }}'
+        group: docker
+        append: yes
+    - name: Create Pihole Directory
+      file: state=directory path=/home/'{{ user }}'/pihole
+    
+  # Three tasks below are needed in Ubuntu as per https://github.com/pi-hole/docker-pi-hole/#installing-on-ubuntu
+    - name: Disable Stub Resolver
+      replace:
+        path: /etc/systemd/resolved.conf
+        regexp: '#DNSStubListener=yes'
+        replace: 'DNSStubListener=no'
+    - name: Change Symlink
+      shell: sh -c 'rm /etc/resolv.conf && ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf'
+    - name: Restart systemd-resolved
+      systemd:
+        state: restarted
+        name: systemd-resolved
+        daemon_reload: yes
+    - name: Use a Docker-Compose Template for Image Variable
+      template:
+          src: ../Docker-Compose/docker-compose.yaml.j2
+          dest: /home/'{{ user }}'/pihole/docker-compose.yaml
+    - name: Deploy PiHole via Docker Compose
+      docker_compose:
+        project_src: /home/'{{ user }}'/pihole
+        files:
+        - docker-compose.yaml

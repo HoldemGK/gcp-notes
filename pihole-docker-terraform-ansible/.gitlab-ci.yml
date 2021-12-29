@@ -1,0 +1,66 @@
+variables: 
+  WORKER_NAMES: "docker-1"
+  WORKER_IPS: "192.168.1.81"
+  PIHOLE_USER: "sam"
+  PIHOLE_IMAGE_TAG: "2021.12"
+
+# destroy-docker-vm:
+#   stage: deploy
+#   script:
+#     - export USER=$(whoami)
+#     - mkdir -p /home/${USER}/.terraform.d
+#     - |-
+#       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
+#       {
+#         "credentials": {
+#           "app.terraform.io": {
+#             "token": "${TFC_TOKEN}"
+#           }
+#         }
+#       }
+#       EOF
+#     - cd Terraform
+#     - ./createautovars.sh "${WORKER_NAMES}" "${WORKER_IPS}"
+#     - terraform init -backend-config="token=${TFC_TOKEN}"
+#     - terraform apply --auto-approve -destroy
+#   tags: [inK8s]
+
+terraform-docker-vm:
+  stage: build
+  script:
+    - export USER=$(whoami)
+    - mkdir -p /home/${USER}/.terraform.d
+    - |-
+      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
+      {
+        "credentials": {
+          "app.terraform.io": {
+            "token": "${TFC_TOKEN}"
+          }
+        }
+      }
+      EOF
+    - cd Terraform
+    - ./createautovars.sh "${WORKER_NAMES}" "${WORKER_IPS}"
+    - terraform init -backend-config="token=${TFC_TOKEN}"
+    - terraform fmt
+    - terraform validate
+    - terraform apply --auto-approve
+  tags: [inK8s]
+
+deploy-pihole:
+  stage: deploy
+  script:
+    - export USER=$(whoami)
+    - sudo chmod 755 Ansible
+    - cd Ansible
+    - sudo sed -i "s/<placeholder_ip>/${WORKER_IPS}/g" inventory
+    - mkdir -p /home/${USER}/.ssh
+    - cp ${id_rsa} /home/${USER}/.ssh
+    - sudo chmod 400 /home/${USER}/.ssh/id_rsa
+    - eval `ssh-agent`
+    - ssh-add /home/${USER}/.ssh/id_rsa
+    - ansible-playbook -i inventory --extra-vars "user=${PIHOLE_USER} PIHOLE_IMAGE_TAG=${PIHOLE_IMAGE_TAG}" piholePlaybook.yaml
+  needs:
+    - job: terraform-docker-vm
+  tags: [inK8s]

@@ -21,7 +21,7 @@ spec:
           value: "9200"
         volumeMounts:
         - name: varlog
-          mountPayh: /var/log
+          mountPath: /var/log
         - name: dockerlogs
           mountPath: /var/lib/docker/containers
           readOnly: true

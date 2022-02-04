@@ -4,7 +4,7 @@ metadata:
   name: fluentd-rb
   namespace: kube-system
 subjects:
-- kind: User
+- kind: ServiceAccount
   name: fluentd-sa
   apiGroup: rbac.authorization.k8s.io
 roleRef:

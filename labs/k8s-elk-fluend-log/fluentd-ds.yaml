@@ -6,7 +6,6 @@ metadata:
   labels:
     k8s-app: fluentd-logger
 spec:
-  serviceAccountName: fluentd-sa
   selector:
     matchLabels:
       k8s-app: fluentd-logger
@@ -15,6 +14,11 @@ spec:
       labels:
         k8s-app: fluentd-logger
     spec:
+      serviceAccount: fluentd-sa
+      serviceAccountName: fluentd-sa
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
       containers:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:elasticsearch

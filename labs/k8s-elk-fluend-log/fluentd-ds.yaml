@@ -18,9 +18,9 @@ spec:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:elasticsearch
         env:
-        - name: FLUENT\_ELASTICSEARCH\_HOST
+        - name: FLUENT_ELASTICSEARCH_HOST
           value: "elasticsearch-master"
-        - name: FLUENT\_ELASTICSEARCH\_PORT
+        - name: FLUENT_ELASTICSEARCH_PORT
           value: "9200"
         volumeMounts:
         - name: varlog

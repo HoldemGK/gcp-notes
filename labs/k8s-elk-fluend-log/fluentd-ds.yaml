@@ -32,6 +32,6 @@ spec:
       - name: varlog
         hostPath:
           path: /var/log
-      - name: dpckerlogs
+      - name: dockerlogs
         hostPath:
           path: /var/lib/docker/containers

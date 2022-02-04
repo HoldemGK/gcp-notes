@@ -11,6 +11,9 @@ spec:
       labels:
         k8s-app: fluentd-logger
     spec:
+      selector:
+        matchLabels:
+          name: fluentd-logger
       containers:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:elasticsearch

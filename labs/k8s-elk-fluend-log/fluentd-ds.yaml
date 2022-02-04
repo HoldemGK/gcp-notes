@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: fluentd-logger
+      k8s-app: fluentd-logger
   template:
     metadata:
       labels:

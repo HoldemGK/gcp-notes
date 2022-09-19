@@ -12,10 +12,6 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "zone" {
-  default     = "${var.region}-a"
-}
-
 variable "name" {
   default     = "mc-server"
 }

@@ -1,7 +1,7 @@
 resource "google_compute_instance" "mc-server" {
   name         = var.name
   machine_type = "e2-medium"
-  zone         = var.zone
+  zone         = "${var.region}-a"
 
   tags = ["foo", "bar"]
 

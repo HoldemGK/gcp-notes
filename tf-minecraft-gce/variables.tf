@@ -3,6 +3,10 @@ variable "project" {
   default     = ""
 }
 
+variable "gcp-creds" {
+default= ""
+}
+
 variable "region" {
   description = "Region for cloud resources"
   default     = "us-central1"

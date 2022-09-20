@@ -19,7 +19,7 @@ resource "google_compute_instance" "mc_server" {
     network = "default"
 
     access_config {
-      nat_ip = google_compute_address.mc_server_ip
+      nat_ip = google_compute_address.mc_server_ip.address
     }
   }
 

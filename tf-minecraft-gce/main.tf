@@ -11,7 +11,9 @@ resource "google_compute_instance" "mc_server" {
     }
   }
 
-  attached_disk = google_compute_disk.minecraft_disk.self_link
+  attached_disk {
+    source = google_compute_disk.minecraft_disk.self_link
+  }
 
   network_interface {
     network = "default"

@@ -1,7 +1,11 @@
+locals {
+  zone = "${var.region}-a"
+}
+
 resource "google_compute_instance" "mc_server" {
   name         = "mc-server"
   machine_type = "e2-medium"
-  zone         = "${var.region}-a"
+  zone         = local.zone
 
   tags = ["minecraft-server"]
 
@@ -52,6 +56,7 @@ resource "google_compute_instance" "mc_server" {
 
 resource "google_compute_disk" "minecraft_disk" {
   name  = "minecraft-disk"
+  zone = local.zone
   type  = "pd-ssd"
   physical_block_size_bytes = 50
 }

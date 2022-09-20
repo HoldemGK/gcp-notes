@@ -58,7 +58,7 @@ resource "google_compute_disk" "minecraft_disk" {
   name  = "minecraft-disk"
   zone = local.zone
   type  = "pd-ssd"
-  physical_block_size_bytes = 50
+  size = 50
 }
 
 resource "google_compute_address" "mc_server_ip" {

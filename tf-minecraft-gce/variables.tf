@@ -2,7 +2,7 @@ variable "project" {
   description = "The project to deploy to, if not set the default provider project is used."
 }
 
-variable "gcp-creds" {
+variable "key_json" {
   default = ""
 }
 

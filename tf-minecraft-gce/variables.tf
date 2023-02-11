@@ -3,7 +3,7 @@ variable "project" {
 }
 
 variable "gcp-creds" {
-default= ""
+  default = ""
 }
 
 variable "region" {
@@ -12,9 +12,9 @@ variable "region" {
 }
 
 variable "name" {
-  default     = "mc-server"
+  default = "mc-server"
 }
 
 variable "image" {
-  default     = "debian-cloud/debian-11"
+  default = "debian-cloud/debian-11"
 }

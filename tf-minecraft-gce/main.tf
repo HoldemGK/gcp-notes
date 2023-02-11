@@ -33,7 +33,7 @@ resource "google_compute_instance" "mc_server" {
   }
 
   metadata_startup_script = file("./scripts/first_start.sh")
-  
+
 
   service_account {
     scopes = ["default", "storage-rw"]
@@ -55,9 +55,9 @@ resource "google_compute_instance" "mc_server" {
 }
 
 resource "google_compute_disk" "minecraft_disk" {
-  name  = "minecraft-disk"
+  name = "minecraft-disk"
   zone = local.zone
-  type  = "pd-ssd"
+  type = "pd-ssd"
   size = 50
 }
 

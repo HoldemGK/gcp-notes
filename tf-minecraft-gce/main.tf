@@ -28,8 +28,8 @@ resource "google_compute_instance" "mc_server" {
   }
 
   metadata = {
-    startup-script-url  = "https://storage.googleapis.com/cloud-training/archinfra/mcserver/startup.sh"
-    shutdown-script-url = "https://storage.googleapis.com/cloud-training/archinfra/mcserver/shutdown.sh"
+    startup-script  = file("./scripts/startup.sh")
+    shutdown-script = file("./scripts/shutdown.sh")
   }
 
   metadata_startup_script = file("./scripts/first_start.sh")

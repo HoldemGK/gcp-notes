@@ -28,11 +28,14 @@ resource "google_compute_instance" "mc_server" {
   }
 
   metadata = {
-    startup-script  = file("./scripts/startup.sh")
     shutdown-script = file("./scripts/shutdown.sh")
   }
 
-  #metadata_startup_script = file("./scripts/first_start.sh")
+  metadata_startup_script = replace(coalesce(var.custom_user_data, templatefile("${path.module}/scripts/startup_script.tpl",
+    {
+      #INIT_URL                          = var.INIT_URL,
+      BUCKET_PREFIX                     = var.project,
+  })), "/\r/", "")
 
 
   service_account {
@@ -43,20 +46,6 @@ resource "google_compute_instance" "mc_server" {
               "service-control",
               "trace"]
   }
-
-  provisioner "file" {
-    source      = "./scripts/backup.sh"
-    destination = "/home/minecraft/"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "export YOUR_BUCKET_NAME=${var.project}",
-      "sudo chmod 755 /home/minecraft/backup.sh",
-      "{ crontab -l; echo '0 */4 * * * /home/minecraft/backup.sh'; } | crontab -",
-    ]
-  }
-
 }
 
 resource "google_compute_disk" "minecraft_disk" {

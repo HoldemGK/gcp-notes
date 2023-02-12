@@ -24,6 +24,6 @@ variable "location" {
 }
 
 variable "bucket_names" {
-  type        = list(string)
-  default     = ["minecraft-backup", "minecraft-scripts"]
+  type    = list(string)
+  default = ["minecraft-backup", "minecraft-scripts"]
 }

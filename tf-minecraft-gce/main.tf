@@ -77,7 +77,7 @@ resource "google_compute_firewall" "minecraft_rule" {
   target_tags   = ["minecraft-server"]
 }
 
-resource "google_storage_bucket" "minecraft_backup" {
+resource "google_storage_bucket" "minecraft_buckets" {
   for_each      = toset(var.bucket_names)
   name          = "${var.project}-${each.value}"
   location      = var.location

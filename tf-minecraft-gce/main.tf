@@ -78,7 +78,8 @@ resource "google_compute_firewall" "minecraft_rule" {
 }
 
 resource "google_storage_bucket" "minecraft_backup" {
-  name          = "${var.project}-minecraft-backup"
-  location      = "US"
+  for_each      = toset(var.bucket_names)
+  name          = "${var.project}-${each.value}"
+  location      = var.location
   force_destroy = true
 }

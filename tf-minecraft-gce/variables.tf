@@ -18,3 +18,12 @@ variable "name" {
 variable "image" {
   default = "debian-cloud/debian-11"
 }
+
+variable "location" {
+  default = "US"
+}
+
+variable "bucket_names" {
+  type        = list(string)
+  default     = ["minecraft-backup", "minecraft-scripts"]
+}

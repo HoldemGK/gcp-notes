@@ -1,0 +1,19 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform backend config
+terraform.tfvars
+
+# Ignore Terraform module directories
+.terraform/
+
+# Ignore generated Terraform plan files
+*.tfplan
+
+# Ignore Terraform's cache directory
+.terraform.d/plugin-cache/
+
+# Ignore miscellaneous Terraform files
+*.log
+*.zip

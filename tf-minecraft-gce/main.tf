@@ -32,11 +32,16 @@ resource "google_compute_instance" "mc_server" {
     shutdown-script = file("./scripts/shutdown.sh")
   }
 
-  metadata_startup_script = file("./scripts/first_start.sh")
+  #metadata_startup_script = file("./scripts/first_start.sh")
 
 
   service_account {
-    scopes = ["default", "storage-rw"]
+    scopes = ["storage-rw",
+              "logging-write",
+              "monitoring",
+              "service-management",
+              "service-control",
+              "trace"]
   }
 
   provisioner "file" {

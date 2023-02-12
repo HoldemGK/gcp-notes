@@ -54,3 +54,10 @@ gsutil -m cp -R $${BASH_SOURCE%/*}/world gs://${BUCKET_PREFIX}-minecraft-backup/
 screen -r mcs -X stuff '/save-on\n'
 echo "saved file at $now"
 EOF
+
+# Run first boot scripts
+if [[ -f /home/minecraft/cloud/config/startup_finished ]]; then
+    echo "Running first boot scripts"
+    chmod +x /home/minecraft/cloud/config/first_start.sh
+    bash /home/minecraft/cloud/config/first_start.sh
+fi

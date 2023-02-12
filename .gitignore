@@ -15,5 +15,6 @@ terraform.tfvars
 .terraform.d/plugin-cache/
 
 # Ignore miscellaneous Terraform files
+.terraform.lock.hcl
 *.log
 *.zip

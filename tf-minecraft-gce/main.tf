@@ -33,8 +33,9 @@ resource "google_compute_instance" "mc_server" {
 
   metadata_startup_script = replace(coalesce(var.custom_user_data, templatefile("${path.module}/scripts/startup_script.tpl",
     {
-      #INIT_URL                          = var.INIT_URL,
+      #INIT_URL   = var.INIT_URL,
       BUCKET_PREFIX = var.project,
+      NETDATA_TOKEN = var.netdata_token
   })), "/\r/", "")
 
 

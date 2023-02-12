@@ -31,6 +31,8 @@ sudo mount -o discard,defaults /dev/disk/by-id/google-minecraft-disk /home/minec
 sudo apt-get update
 sudo apt-get install -y default-jre-headless
 
+# Monitoring
+wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --claim-token ${NETDATA_TOKEN} --claim-url https://app.netdata.cloud
 # Backup prepare
 sudo chmod 755 /home/minecraft/backup.sh
 { crontab -l; echo '0 */4 * * * /home/minecraft/backup.sh'; } | crontab -

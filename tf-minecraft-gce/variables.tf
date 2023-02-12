@@ -33,3 +33,9 @@ variable "custom_user_data" {
   type        = string
   default     = null
 }
+
+variable "netdata_token" {
+  description = "Provide a token for monitoring system"
+  type        = string
+  default     = ""
+}

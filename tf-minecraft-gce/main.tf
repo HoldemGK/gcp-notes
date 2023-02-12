@@ -34,24 +34,24 @@ resource "google_compute_instance" "mc_server" {
   metadata_startup_script = replace(coalesce(var.custom_user_data, templatefile("${path.module}/scripts/startup_script.tpl",
     {
       #INIT_URL                          = var.INIT_URL,
-      BUCKET_PREFIX                     = var.project,
+      BUCKET_PREFIX = var.project,
   })), "/\r/", "")
 
 
   service_account {
     scopes = ["storage-rw",
-              "logging-write",
-              "monitoring",
-              "service-management",
-              "service-control",
-              "trace"]
+      "logging-write",
+      "monitoring",
+      "service-management",
+      "service-control",
+    "trace"]
   }
 }
 
 resource "google_compute_disk" "minecraft_disk" {
   name = "minecraft-disk"
   zone = local.zone
-  type = "pd-ssd"
+  #type = "pd-ssd"
   size = 50
 }
 

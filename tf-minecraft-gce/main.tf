@@ -6,6 +6,7 @@ resource "google_compute_instance" "mc_server" {
   name         = "mc-server"
   machine_type = "e2-medium"
   zone         = local.zone
+  description  = "te"
 
   tags = ["minecraft-server"]
 
@@ -16,7 +17,8 @@ resource "google_compute_instance" "mc_server" {
   }
 
   attached_disk {
-    source = google_compute_disk.minecraft_disk.self_link
+    source      = google_compute_disk.minecraft_disk.self_link
+    device_name = google_compute_disk.minecraft_disk.name
   }
 
   network_interface {

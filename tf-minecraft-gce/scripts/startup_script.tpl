@@ -45,7 +45,7 @@ sudo apt-get install -y screen > /dev/null
 touch /var/cloud/config/startup_finished
 ls /var/cloud/config
 echo "First Starting Server JAR..."
-sudo screen -d -S mcs java -Xmx1024M -Xms1024M -jar server.jar
+sudo screen -S mcs java -Xmx1024M -Xms1024M -jar server.jar --nogui
 EOF
 
 # Create backup script on first boot
@@ -66,7 +66,7 @@ if [[ -f $CL_CO_PATH/startup_finished ]]; then
   mount /dev/disk/by-id/google-minecraft-disk $MC_PATH
   cd $MC_PATH
   pwd
-  sudo screen -d -S mcs java -Xmx1024M -Xms1024M -jar server.jar
+  sudo screen -S mcs java -Xmx1024M -Xms1024M -jar server.jar --nogui
   echo "Onboarding complete, skip startup script"
   
 else  # Run first boot scripts

@@ -6,7 +6,7 @@ resource "google_compute_instance" "mc_server" {
   name         = "mc-server"
   machine_type = "e2-medium"
   zone         = local.zone
-  description  = "t"
+  description  = ""
 
   tags = ["minecraft-server"]
 

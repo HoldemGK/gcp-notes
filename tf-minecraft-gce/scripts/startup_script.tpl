@@ -22,7 +22,7 @@ cat << 'EOF' > $SCRIPT_PATH/first_start.sh
 #!/bin/bash
 
 sudo apt-get update
-sudo apt-get install -y openjdk-17-jdk default-jre-headless wget
+sudo apt-get install -y openjdk-17-jdk default-jre-headless wget > /dev/null
 echo "Installing packages completed"
 sudo mkfs.ext4 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/disk/by-id/google-minecraft-disk
 sudo mount -o discard,defaults /dev/disk/by-id/google-minecraft-disk /home/minecraft
@@ -37,13 +37,15 @@ cd /home/minecraft
 pwd
 sudo wget https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar
 echo "Initialising server settings... "
-java -jar server.jar --initSettings >/dev/null
+java -jar server.jar --initSettings > /dev/null
 sed -i "s/eula=false/eula=true/g" eula.txt
-echo "eula=false->true"
+cat eula.txt
 echo "Installing screen... "
-sudo apt-get install -y screen
+sudo apt-get install -y screen > /dev/null
 touch /var/cloud/config/startup_finished
-sudo screen -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui &
+ls /var/cloud/config
+echo "First Starting Server JAR..."
+sudo screen -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
 EOF
 
 # Create backup script on first boot

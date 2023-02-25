@@ -35,7 +35,6 @@ wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/
 cd /home/minecraft
 pwd
 sudo wget https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar
-sudo java -Xmx1024M -Xms1024M -jar server.jar nogui
 sed -i "s/eula=false/eula=true/g" ./eula.txt
 sudo apt-get install -y screen
 touch /var/cloud/config/startup_finished

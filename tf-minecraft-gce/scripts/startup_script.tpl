@@ -18,28 +18,27 @@ exec 2>&1
 
 # Create runtime configuration on first boot
 echo "Creating first_start.sh"
-echo ${NETDATA_TOKEN} #TODO clear
 cat << 'EOF' > $SCRIPT_PATH/first_start.sh
 #!/bin/bash
-sudo mkfs.ext4 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/disk/by-id/google-minecraft-disk
-sudo mount -o discard,defaults /dev/disk/by-id/google-minecraft-disk $MC_PATH
+
 sudo apt-get update
 sudo apt-get install -y openjdk-17-jdk default-jre-headless wget
+sudo mkfs.ext4 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/disk/by-id/google-minecraft-disk
+sudo mount -o discard,defaults /dev/disk/by-id/google-minecraft-disk /home/minecraft
 
 # Monitoring
-echo "NETDATA_TOKEN ${NETDATA_TOKEN}" #TODO clear
 wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --claim-token ${NETDATA_TOKEN} --claim-url https://app.netdata.cloud --non-interactive
 
 # Backup prepare
-{ crontab -l; echo '0 */4 * * * $SCRIPT_PATH/backup.sh'; } | crontab -
+{ crontab -l; echo '0 */4 * * * /etc/init.d/backup.sh'; } | crontab -
       
-cd $MC_PATH
+cd /home/minecraft
 pwd
 sudo wget https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar
 sudo java -Xmx1024M -Xms1024M -jar server.jar nogui
 sed -i "s/eula=false/eula=true/g" ./eula.txt
 sudo apt-get install -y screen
-touch $CL_CO_PATH/startup_finished
+touch /var/cloud/config/startup_finished
 sudo screen -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui &
 EOF
 

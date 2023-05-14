@@ -56,6 +56,15 @@ spec:
 
 Node port range = 30000 - 32767
 
+## Deployment
+
+- Rollout
+```bash
+k rollout status deploy/my-app
+k rollout history deploy/my-app
+k rollout undo deploy/my-app
+```
+
 ## Namespace
 
 ```bash

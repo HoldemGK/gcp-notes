@@ -69,7 +69,7 @@ k rollout undo deploy/my-app
 
 ```bash
 k create ns dev
-k config set-context $(k config current-context) -n dev
+k config set-context $(k config current-context) --namespace=dev
 k get pod --all-namespaces
 cat quota.yaml
 apiVersion: v1
@@ -86,6 +86,44 @@ spec:
     limits.memory: 10Gi
 ```
 
+## Encryption
+
+- Activate
+
+https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/
+
+```bash
+cat /etc/kubernetes/enc/enc.yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: # head -c 32 /dev/random | base64
+      - identity: {}
+```
+add string to the /etc/kubernetes/manifests/kube-apiserver.yaml
+```bash
+--encryption-provider-config=/etc/kubernetes/enc/enc.yaml
+
+volumeMounts:
+- name: enc
+  mountPath: /etc/kubernetes/enc
+  readonly: true
+volumes:
+- name: enc
+  hostPath: /etc/kubernetes/enc
+  type: DirectoryOrCreate
+```
+
+Updating existing secrets:
+```bash
+k get secrets -A -o json | k replace -f -
+```
 ## Tips
 
 https://kubernetes.io/docs/reference/kubectl/conventions/

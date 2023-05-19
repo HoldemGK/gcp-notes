@@ -143,6 +143,21 @@ On the Master Node:
 ```bash
 export ETCDCTL_API=3
 etcdctl version
+
+# Backup
+k logs etcd-controlplane -n kube-system
+k describe pod etcd-controlplane -n kube-system
+etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save /opt/snapshot-pre-boot.db
+
+# Restore 
+etcdctl --data-dir=/var/lib/etcd-from-backup snapshot restore /opt/snapshot-pre-boot.db
+# Update /etc/kubernetes/manifests/etcd.yaml
+# volumes:
+#   - hostPath:
+#       path: /var/lib/etcd-from-backup
+#       type: DirectoryOrCreate
+#     name: etcd-data
+watch "crictl ps | grep etcd"
 ```
 
 To see all the options for a specific sub-command, make use of the -h or –help flag.

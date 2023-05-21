@@ -176,6 +176,58 @@ Since our ETCD database is TLS-Enabled, the following options are mandatory:
 –endpoints=[127.0.0.1:2379] This is the default as ETCD is running on master node and exposed on localhost 2379.
 
 –key                  identify secure client using this TLS key file
+
+## Security
+
+- Generate certs
+```bash
+# Certificate Auth
+openssl genrsa -out ca.key 2048 # Generate
+openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr # Cert Signing request
+openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt # Sign Cert
+
+# Admin User Client-cert
+openssl genrsa -out admin.key 2048 # Generate
+openssl req -new -key admin.key -subj "/CN=kube-admin/O=system:masters" -out admin.csr # Cert Signing request
+openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt # Sign Cert
+
+# How to use
+curl https://kube-apiserver:6443/api/v1/pods --key admin.key --cert admin.crt --cacert ca.crt
+
+cat kube-config.yaml
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: ca.crt
+    server: https://kube-apiserver:6443
+  name: kubernetes
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate: admin.crt
+    client-key: admin.key
+
+# Kube API Server Cert Create
+openssl genrsa -out apiserver.key 2048 # Generate
+openssl req -new -key apiserver.key -subj "/CN=kube-apiserver" -out apiserver.csr -config openssl.cnf # Cert Signing request
+openssl x509 -req -in apiserver.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000 # Sign Cert
+cat openssl.cnf
+[req]
+req_exstensnions = v3_req
+destinguished_name = req_destinguished_name
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation,
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = kubernetes
+DNS.2 = kubernetes.default
+DNS.3 = kubernetes.default.svc
+DNS.4 = kubernetes.default.svc.cluster.local
+IP.1 = 10.96.0.1
+IP.2 = 172.17.0.87
+```
 ## Tips
 
 https://kubernetes.io/docs/reference/kubectl/conventions/

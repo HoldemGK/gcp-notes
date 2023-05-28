@@ -70,7 +70,7 @@ resource "google_compute_firewall" "minecraft_rule" {
     protocol = "tcp"
     ports    = ["25565"]
   }
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = [var.my_public_ip]
   target_tags   = ["minecraft-server"]
 }
 

@@ -39,3 +39,9 @@ variable "netdata_token" {
   type        = string
   default     = ""
 }
+
+variable "my_public_ip" {
+  description = "Source IP for firewall"
+  type        = string
+  default     = "0.0.0.0/0"
+}

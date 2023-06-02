@@ -228,6 +228,31 @@ DNS.4 = kubernetes.default.svc.cluster.local
 IP.1 = 10.96.0.1
 IP.2 = 172.17.0.87
 ```
+
+- Network Policies
+```bash
+cat net_pol.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-pod
+    - ipBlock:
+        cidr: 192.168.0.0/24  # allow connection from backup server outside cluster
+    ports:
+    - protocol: TCP
+      port: 3306
+```
 ## Tips
 
 https://kubernetes.io/docs/reference/kubectl/conventions/

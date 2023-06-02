@@ -292,6 +292,17 @@ kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-ru
 # This will not use the pods labels as selectors
 kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
 
+# Network Comands
+ip link
+ip addr show type bridge
+ip addr add 192.168.1.10/24 dev eth0
+ip route add 192.168.1.10/24 via 192.168.2.1
+cat /proc/sys/net/ipv4/ip_forward
+arp
+route
+netstat -nplt
+netstat -anp | grep etcd | grep 2379 | wc -l  # Count connections
+
 ```
 - Default Resource Requirements and Limits
 ```bash

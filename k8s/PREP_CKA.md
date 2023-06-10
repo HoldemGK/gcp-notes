@@ -303,6 +303,9 @@ route
 netstat -nplt
 netstat -anp | grep etcd | grep 2379 | wc -l  # Count connections
 
+# Cert command check expiration
+openssl x509 -in /var/lib/kubelet/worker-1.crt -text
+
 ```
 - Default Resource Requirements and Limits
 ```bash

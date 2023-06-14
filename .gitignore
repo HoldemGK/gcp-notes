@@ -18,3 +18,5 @@ terraform.tfvars
 .terraform.lock.hcl
 *.log
 *.zip
+
+bin/

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
 overlay
 br_netfilter

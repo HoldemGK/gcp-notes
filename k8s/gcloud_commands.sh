@@ -19,3 +19,12 @@ gcloud beta compute instance-groups managed set-autoscaling node-group  \
   --cool-down-period=40 --max-num-replicas=4 --min-num-replicas=1 \
   --mode=on --target-cpu-utilization=0.8 \
   --zone=europe-central2-b
+
+# Bastion
+gcloud compute instances create bastion --machine-type=e2-micro \
+  --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=eu-c2-k8s-nodes \
+  --metadata=startup-script-url=gs://gk-k8s-install-script/bastion_boot.sh \
+  --can-ip-forward --no-restart-on-failure --maintenance-policy=TERMINATE --provisioning-model=SPOT --instance-termination-action=STOP \
+  --scopes=https://www.googleapis.com/auth/cloud-platform --tags=k8s,master,node \
+  --service-account=admin-sa@gk-k8s-lab.iam.gserviceaccount.com \
+  --zone=europe-central2-b

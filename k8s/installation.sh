@@ -1,4 +1,7 @@
 #!/bin/bash
+# Use this to fix error characters
+#sed -i -e 's/\r$//' scriptname.sh
+
 # Install monitor agent
 wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --nightly-channel --claim-token ${ND_TOKEN} --claim-rooms ${ND_ROOM} --claim-url https://app.netdata.cloud
 # Install kube

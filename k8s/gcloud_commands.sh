@@ -10,7 +10,7 @@ gcloud compute instances create master --boot-disk-size 100GB --can-ip-forward \
 
 # Nodes MIG
 gcloud beta compute instance-groups managed create node-group \
-  --base-instance-name=node-group1 --base-instance-name=node \
+  --base-instance-name=node-group --base-instance-name=node \
   --size=1 --template=node-tmpl-6 \
   --health-check=node-hc --initial-delay=200 --force-update-on-repair \
    --zone=europe-central2-b

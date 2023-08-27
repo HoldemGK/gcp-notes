@@ -29,3 +29,23 @@ gcloud compute instances create bastion --machine-type=e2-medium \
   --scopes=https://www.googleapis.com/auth/cloud-platform --tags=k8s,master,node \
   --service-account=admin-sa@gk-k8s-lab.iam.gserviceaccount.com \
   --zone=europe-central2-a
+
+# GKE
+gcloud beta container clusters create "k8s" \
+  --no-enable-basic-auth --cluster-version "1.27.3-gke.100" --release-channel "stable" \
+  --machine-type "e2-medium" --image-type "COS_CONTAINERD" --disk-type "pd-balanced" --disk-size "50" \
+  --metadata disable-legacy-endpoints=true \
+  --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+  --max-pods-per-node "32" --spot --num-nodes "2" \
+  --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM --enable-ip-alias \
+  --network "projects/gk-k8s-lab/global/networks/k8s-nodes" \
+  --subnetwork "projects/gk-k8s-lab/regions/europe-central2/subnetworks/eu-c2-k8s-nodes" \
+  --cluster-ipv4-cidr "192.168.0.0/21" --services-ipv4-cidr "192.168.8.0/22" \
+  --no-enable-intra-node-visibility --default-max-pods-per-node "32" \
+  --enable-autoscaling --total-min-nodes "1" --total-max-nodes "3" --location-policy "ANY" \
+  --security-posture=standard --workload-vulnerability-scanning=disabled --no-enable-master-authorized-networks \
+  --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver \
+  --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 \
+  --binauthz-evaluation-mode=DISABLED --enable-managed-prometheus --enable-shielded-nodes \
+  --node-locations "europe-central2-a" \
+  --zone "europe-central2-a"

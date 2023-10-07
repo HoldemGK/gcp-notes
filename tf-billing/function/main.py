@@ -35,8 +35,8 @@ from googleapiclient import discovery
 # [END functions_billing_limit_appengine]
 
 # [START functions_billing_slack]
-import slack
-from slack.errors import SlackApiError
+#import slack
+#from slack.errors import SlackApiError
 
 # [END functions_billing_slack]
 
@@ -52,35 +52,35 @@ PROJECT_NAME = f"projects/{PROJECT_ID}"
 BOT_ACCESS_TOKEN = "xxxx-111111111111-abcdefghidklmnopq"
 CHANNEL = "C0XXXXXX"
 
-slack_client = slack.WebClient(token=BOT_ACCESS_TOKEN)
+#slack_client = slack.WebClient(token=BOT_ACCESS_TOKEN)
 
 
-def notify_slack(data, context):
-    pubsub_message = data
+# def notify_slack(data, context):
+#     pubsub_message = data
 
-    # For more information, see
-    # https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
-    try:
-        notification_attr = json.dumps(pubsub_message["attributes"])
-    except KeyError:
-        notification_attr = "No attributes passed in"
+#     # For more information, see
+#     # https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
+#     try:
+#         notification_attr = json.dumps(pubsub_message["attributes"])
+#     except KeyError:
+#         notification_attr = "No attributes passed in"
 
-    try:
-        notification_data = base64.b64decode(data["data"]).decode("utf-8")
-    except KeyError:
-        notification_data = "No data passed in"
+#     try:
+#         notification_data = base64.b64decode(data["data"]).decode("utf-8")
+#     except KeyError:
+#         notification_data = "No data passed in"
 
-    # This is just a quick dump of the budget data (or an empty string)
-    # You can modify and format the message to meet your needs
-    budget_notification_text = f"{notification_attr}, {notification_data}"
+#     # This is just a quick dump of the budget data (or an empty string)
+#     # You can modify and format the message to meet your needs
+#     budget_notification_text = f"{notification_attr}, {notification_data}"
 
-    try:
-        slack_client.api_call(
-            "chat.postMessage",
-            json={"channel": CHANNEL, "text": budget_notification_text},
-        )
-    except SlackApiError:
-        print("Error posting to Slack")
+#     try:
+#         slack_client.api_call(
+#             "chat.postMessage",
+#             json={"channel": CHANNEL, "text": budget_notification_text},
+#         )
+#     except SlackApiError:
+#         print("Error posting to Slack")
 
 
 # [END functions_billing_slack]

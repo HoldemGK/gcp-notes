@@ -1,8 +1,10 @@
-variable "project" {}
-variable "key_json" {}
+variable "project" {
+    type = string
+    default = "dev-ops-prep"
+}
 
 variable "gcp-creds" {
-default= ""
+    default= ""
 }
 
 variable "prefix" {

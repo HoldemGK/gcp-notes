@@ -1,6 +1,6 @@
 variable "project" {
     type = string
-    default = "dev-ops-prep"
+    default = "billing-millenium-report"
 }
 
 variable "gcp-creds" {

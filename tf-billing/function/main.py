@@ -152,7 +152,7 @@ def __disable_billing_for_project(project_name, projects):
 
 
 # [START functions_billing_limit]
-ZONE = "us-west1-b"
+ZONE = "europe-central2-b"
 
 
 def limit_use(data, context):

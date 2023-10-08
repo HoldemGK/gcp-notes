@@ -6,7 +6,7 @@ gcloud compute instances create master --boot-disk-size 100GB --can-ip-forward \
   --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
   --tags k8s,master \
   --metadata startup-script-url=gs://gk-k8s-install-script/install-master.sh \
-  --service-account admin-sa@gk-k8s-lab.iam.gserviceaccount.com \
+  --service-account admin-sa@${PROJECT}.iam.gserviceaccount.com \
   --zone europe-central2-b
 
 # Nodes MIG
@@ -27,7 +27,7 @@ gcloud compute instances create bastion --machine-type=e2-medium \
   --metadata=startup-script-url=gs://gk-k8s-install-script/bastion_boot.sh \
   --can-ip-forward --no-restart-on-failure --maintenance-policy=TERMINATE --provisioning-model=SPOT --instance-termination-action=STOP \
   --scopes=https://www.googleapis.com/auth/cloud-platform --tags=k8s,master,node \
-  --service-account=admin-sa@gk-k8s-lab.iam.gserviceaccount.com \
+  --service-account=admin-sa@${PROJECT}.iam.gserviceaccount.com \
   --zone=europe-central2-a
 
 # GKE
@@ -38,8 +38,8 @@ gcloud beta container clusters create "k8s" \
   --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
   --max-pods-per-node "32" --spot --num-nodes "2" \
   --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM --enable-ip-alias \
-  --network "projects/gk-k8s-lab/global/networks/k8s-nodes" \
-  --subnetwork "projects/gk-k8s-lab/regions/europe-central2/subnetworks/eu-c2-k8s-nodes" \
+  --network "projects/${PROJECT}/global/networks/k8s-nodes" \
+  --subnetwork "projects/${PROJECT}/regions/europe-central2/subnetworks/eu-c2-k8s-nodes" \
   --cluster-ipv4-cidr "192.168.0.0/21" --services-ipv4-cidr "192.168.8.0/22" \
   --no-enable-intra-node-visibility --default-max-pods-per-node "32" \
   --enable-autoscaling --total-min-nodes "1" --total-max-nodes "3" --location-policy "ANY" \

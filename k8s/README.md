@@ -94,7 +94,7 @@ kubectl top pods -A | sort --reverse --key 4 --numeric`
 `kubectl get pods -n my-namespace -o=custom-columns='NAME:spec.containers[*].name,MEMREQ:spec.containers[*].resources.requests.memory,MEMLIM:spec.containers[*].resources.limits.memory,CPUREQ:spec.containers[*].resources.requests.cpu,CPULIM:spec.containers[*].resources.limits.cpu'`
 
 - Get manifest before start
-`kubectl run test --image=grafana/grafana --dry-run -o yaml`
+`kubectl run test --image=grafana/grafana --dry-run=client -o yaml`
 
 - Run interactive shell to a temporary Pod
 `kubectl run redis-test --rm --tty -i --restart='Never' \
@@ -118,16 +118,16 @@ kubectl top pods -A | sort --reverse --key 4 --numeric`
   `kubectl get nodes -o jsonpath='{.items[*].spec.podCIDR}' | tr " " "\n"`
 
   - Logs of pods
-  `kubectl -n my-namespace logs -f my-pod --timestamps`
-  `kubectl -n my-namespace logs -f my-pod --tail=50`
-  `kubectl -n my-namespace logs -f my-pod --all-containers`
-  `kubectl -n my-namespace logs -f -l app=nginx`
+  `kubectl -n my-namespace logs my-pod --timestamps`
+  `kubectl -n my-namespace logs my-pod --tail=50`
+  `kubectl -n my-namespace logs my-pod --all-containers`
+  `kubectl -n my-namespace logs -l app=nginx`
   `kubectl -n my-namespace logs my-pod --previous`
 
   - Copy secret from one namespace to another
   `kubectl get secrets -o json --namespace namespace-old | \
   jq '.items[].metadata.namespace = "namespace-new"' | \
-  kubectl create-f  -`
+  kubectl create -f  -`
 
   - Create SSL cert
   `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=grafana.mysite.ru/O=MyOrganization"

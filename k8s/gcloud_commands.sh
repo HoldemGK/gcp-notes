@@ -23,7 +23,7 @@ gcloud beta compute instance-groups managed set-autoscaling node-group  \
 
 # Bastion
 gcloud compute instances create bastion --machine-type=e2-medium \
-  --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=eu-c2-k8s-nodes \
+  --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
   --metadata=startup-script-url=gs://${BUCKET_NAME}/bastion_boot.sh \
   --can-ip-forward --no-restart-on-failure --maintenance-policy=TERMINATE --provisioning-model=SPOT --instance-termination-action=STOP \
   --scopes=https://www.googleapis.com/auth/cloud-platform --tags=k8s,master,node \

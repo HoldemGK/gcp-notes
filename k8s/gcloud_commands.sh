@@ -5,7 +5,7 @@ gcloud compute instances create master --boot-disk-size 100GB --can-ip-forward \
   --private-network-ip 10.0.0.11 --subnet eu-c2-k8s-nodes \
   --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
   --tags k8s,master \
-  --metadata startup-script-url=gs://gk-k8s-install-script/install-master.sh \
+  --metadata startup-script-url=gs://${BUCKET_NAME}/install-master.sh \
   --service-account admin-sa@${PROJECT}.iam.gserviceaccount.com \
   --zone europe-central2-b
 
@@ -24,7 +24,7 @@ gcloud beta compute instance-groups managed set-autoscaling node-group  \
 # Bastion
 gcloud compute instances create bastion --machine-type=e2-medium \
   --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=eu-c2-k8s-nodes \
-  --metadata=startup-script-url=gs://gk-k8s-install-script/bastion_boot.sh \
+  --metadata=startup-script-url=gs://${BUCKET_NAME}/bastion_boot.sh \
   --can-ip-forward --no-restart-on-failure --maintenance-policy=TERMINATE --provisioning-model=SPOT --instance-termination-action=STOP \
   --scopes=https://www.googleapis.com/auth/cloud-platform --tags=k8s,master,node \
   --service-account=admin-sa@${PROJECT}.iam.gserviceaccount.com \

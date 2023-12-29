@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: basic-ingress
+  namespace: httpbin
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "httpbin-static-ip"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: httpbin
+                port:
+                  number: 80

@@ -11,7 +11,7 @@ gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter
 gcloud run deploy pdf-converter \
   --image gcr.io/$GOOGLE_CLOUD_PROJECT/pdf-converter \
   --platform managed \
-  --region Region \
+  --region $REGION \
   --no-allow-unauthenticated \
   --max-instances=1
 

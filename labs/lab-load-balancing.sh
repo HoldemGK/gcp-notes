@@ -1,8 +1,8 @@
 #Create instance apache https
 gcloud compute instances create www \
-    --image-family debian-9 \
+    --image-family debian-11 \
     --image-project debian-cloud \
-    --zone us-central1-b \
+    --zone europe-central2-b \
     --tags https-tag \
     --metadata startup-script="#! /bin/bash
       sudo apt-get update
@@ -14,9 +14,9 @@ gcloud compute instances create www \
       EOF"
       
       gcloud compute instances create www-video \
-    --image-family debian-9 \
+    --image-family debian-11 \
     --image-project debian-cloud \
-    --zone us-central1-b \
+    --zone europe-central2-b \
     --tags https-tag \
     --metadata startup-script="#! /bin/bash
       sudo apt-get update
@@ -28,28 +28,28 @@ gcloud compute instances create www \
       sudo mkdir /var/www/html/video
       echo '<!doctype html><html><body><h1>www-video</h1></body></html>' | sudo tee /var/www/html/video/index.html
       EOF"
-gcloud compute firewall-rules create www-firewall -target-tags https-tag --allow tcp:443
+gcloud compute firewall-rules create www-firewall --target-tags https-tag --allow tcp:443
 gcloud compute instances list
 #Create IPv4 and IPv6 global static external IP addresses for load balancer.
 gcloud compute addresses create lb-ip-1 --ip-version=IPV4 --global
 gcloud compute addresses create lb-ipv6-1 --ip-version=IPV6 --global
 #Create an instance group for each traffic type
-gcloud compute instance-groups unmanaged create video-resources --zone us-central1-b
-gcloud compute instance-groups unmanaged create www-resources --zone us-central1-b
+gcloud compute instance-groups unmanaged create video-resources --zone europe-central2-b
+gcloud compute instance-groups unmanaged create www-resources --zone europe-central2-b
 #Add the instances
 gcloud compute instance-groups unmanaged add-instances video-resources \
     --instances www-video \
-    --zone us-central1-b
+    --zone europe-central2-b
 gcloud compute instance-groups unmanaged add-instances www-resources \
     --instances www \
-    --zone us-central1-b
+    --zone europe-central2-b
 #For each instance group, define an HTTPS service and map a port name to the relevant port
 gcloud compute instance-groups unmanaged set-named-ports video-resources \
     --named-ports https:443 \
-    --zone us-central1-b
+    --zone europe-central2-b
 gcloud compute instance-groups unmanaged set-named-ports www-resources \
     --named-ports https:443 \
-    --zone us-central1-b
+    --zone europe-central2-b
 gcloud compute health-checks create https https-basic-check --port 443
 #Create a backend service for each content provider
 gcloud compute backend-services create video-service \
@@ -66,7 +66,7 @@ gcloud compute backend-services add-backend video-service \
     --max-utilization 0.8 \
     --capacity-scaler 1 \
     --instance-group video-resources \
-    --instance-group-zone us-central1-b \
+    --instance-group-zone europe-central2-b \
     --global
     
 gcloud compute backend-services add-backend web-map-backend-service \
@@ -74,7 +74,7 @@ gcloud compute backend-services add-backend web-map-backend-service \
     --max-utilization 0.8 \
     --capacity-scaler 1 \
     --instance-group www-resources \
-    --instance-group-zone us-central1-b \
+    --instance-group-zone europe-central2-b \
     --global
 #Create a URL map  
 gcloud compute url-maps create web-map --default-service web-map-backend-service

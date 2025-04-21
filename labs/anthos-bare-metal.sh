@@ -242,3 +242,140 @@ kubectl get nodes
 kubectl create serviceaccount -n kube-system admin-user
 kubectl create clusterrolebinding admin-user-binding --clusterrole cluster-admin --serviceaccount kube-system:admin-user
 kubectl create token admin-user -n kube-system
+
+# Creating the user cluster
+bmctl create config -c abm-user-cluster-central --project-id=$PROJECT
+cat bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+
+ # Clearing config file
+tail -n +11 bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml > temp_file && mv temp_file bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+
+ # Addinf requiered lines to config file
+sed -i '1 i\sshPrivateKeyPath: /root/.ssh/id_rsa' bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|type: hybrid|type: user|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|- address: <Machine 1 IP>|- address: 10.200.0.4|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|controlPlaneVIP: 10.0.0.8|controlPlaneVIP: 10.200.0.99|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|# ingressVIP: 10.0.0.2|ingressVIP: 10.200.0.100|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|# addressPools:|addressPools:|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|# - name: pool1|- name: pool1|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|#   addresses:|  addresses:|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|#   - 10.0.0.1-10.0.0.4|  - 10.200.0.100-10.200.0.200|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|# disableCloudAuditLogging: false|disableCloudAuditLogging: false|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|# enableApplication: false|enableApplication: true|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|name: node-pool-1|name: user-cluster-central-pool-1|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|- address: <Machine 2 IP>|- address: 10.200.0.5|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+sed -r -i "s|- address: <Machine 3 IP>|# - address: <Machine 3 IP>|g" bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+cat bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central.yaml
+
+ # Creating the user cluster
+bmctl create cluster -c abm-user-cluster-central --kubeconfig bmctl-workspace/abm-admin-cluster/abm-admin-cluster-kubeconfig
+
+# Access to user cluster
+export KUBECONFIG=$KUBECONFIG:~/baremetal/bmctl-workspace/abm-user-cluster-central/abm-user-cluster-central-kubeconfig
+kubectx abm-user-cluster-central-admin@abm-user-cluster-central
+kubectx user-central=.
+kubectl get nodes
+
+ # Creating a Kubernetes Service Account on cluster and grant it the cluster-admin role
+kubectl create serviceaccount -n kube-system admin-user
+kubectl create clusterrolebinding admin-user-binding --clusterrole cluster-admin --serviceaccount kube-system:admin-user
+kubectl create token admin-user -n kube-system
+
+# Deploy and manage applications in user cluster
+kubectl create deploy hello-app --image=gcr.io/google-samples/hello-app:2.0
+kubectl expose deploy hello-app --name hello-app-service --type LoadBalancer --port 80 --target-port=8080
+kubectl get svc
+
+# Deploy an application and expose it via a L7 load balancer Ingress
+kubectl create deploy hello-kubernetes --image=gcr.io/google-samples/node-hello:1.0
+kubectl expose deploy hello-kubernetes --name hello-kubernetes-service --type NodePort --port 32123 --target-port=8080
+cat <<EOF > nginx-l7.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-l7
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /greet-the-world
+        pathType: Exact
+        backend:
+          service:
+            name: hello-app-service
+            port:
+              number: 80
+      - path: /greet-kubernetes
+        pathType: Exact
+        backend:
+          service:
+            name: hello-kubernetes-service
+            port:
+              number: 32123
+EOF
+kubectl apply -f nginx-l7.yaml
+
+# Deploing a stateful application
+export GOPATH=~/baremetal
+export GCE_PD_SA_NAME=my-gce-pd-csi-sa
+export GCE_PD_SA_DIR=~/baremetal
+export ENABLE_KMS=false
+export PROJECT=$(gcloud config get-value project)
+
+kubectl get csinodes -o jsonpath='{range .items[*]}{.metadata.name} {.spec.drivers} {"\n"}{end}'
+git clone https://github.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver $GOPATH/src/sigs.k8s.io/gcp-compute-persistent-disk-csi-driver -b release-1.3
+cat src/sigs.k8s.io/gcp-compute-persistent-disk-csi-driver/deploy/setup-project.sh
+src/sigs.k8s.io/gcp-compute-persistent-disk-csi-driver/deploy/setup-project.sh
+
+# Deploing the CSI driver
+export GCE_PD_DRIVER_VERSION=stable
+src/sigs.k8s.io/gcp-compute-persistent-disk-csi-driver/deploy/kubernetes/deploy-driver.sh
+kubectl get csinodes -o jsonpath='{range .items[*]} {.metadata.name}{": "} {range .spec.drivers[*]} {.name}{"\n"} {end}{end}'
+
+# Using the installed CSI driver
+cat <<EOF > pd-storage-class.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gce-pd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: pd.csi.storage.gke.io # CSI driver
+parameters: # You provide vendor-specific parameters to this specification
+  type: pd-standard # Be sure to follow the vendor's instructions, in our case pd-ssd, pd-standard, or pd-balanced
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+EOF
+kubectl apply -f pd-storage-class.yaml
+
+cat <<EOF > stateful-app.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: podpvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: gce-pd
+  resources:
+    requests:
+      storage: 6Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server
+spec:
+  containers:
+   - name: web-server
+     image: nginx
+     volumeMounts:
+       - mountPath: /var/lib/www/html
+         name: mypvc
+  volumes:
+   - name: mypvc
+     persistentVolumeClaim:
+       claimName: podpvc
+       readOnly: false
+EOF
+kubectl apply -f stateful-app.yaml
